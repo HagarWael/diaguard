@@ -1,4 +1,4 @@
-import 'package:diaguard1/core/screens/usertype.dart';
+import 'package:diaguard1/features/welcome/screens/usertype.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -4,7 +4,7 @@
             "outputFile": "com.example.diaguard1.app-mergeDebugResources-25:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/hager/Downloads/gradproject-main/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/hager/Downloads/diaguard/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
