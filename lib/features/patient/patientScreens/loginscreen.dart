@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/widgets/gradientContainer.dart';
 import 'package:diaguard1/widgets/logo_widget.dart';
+import 'package:diaguard1/core/localization/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -43,11 +45,13 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackBar(
         content: Text(responseMessage),
         backgroundColor:
-            responseMessage.contains('successful') ? Colors.green : Colors.red,
+            responseMessage.contains(LocaleKeys.successful.tr())
+                ? Colors.green
+                : Colors.red,
       ),
     );
 
-    if (responseMessage.contains('successful') && !newAccount) {
+    if (responseMessage.contains(LocaleKeys.successful.tr()) && !newAccount) {
       Navigator.pushReplacementNamed(context, '/homepatient');
     }
   }
@@ -75,11 +79,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 50.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
                     child: Text(
-                      "تسجيل الدخول للمريض",
-                      style: TextStyle(color: Colors.white, fontSize: 22),
+                      LocaleKeys.login_patient.tr(),
+                      style: const TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
                   if (newAccount)
@@ -87,10 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
                       child: TextField(
                         controller: _controllerFullName,
-                        decoration: const InputDecoration(
-                          hintText: "الاسم كامل",
-                          hintStyle: TextStyle(color: Colors.white70),
-                          focusedBorder: UnderlineInputBorder(
+                        decoration: InputDecoration(
+                          hintText: LocaleKeys.full_name.tr(),
+                          hintStyle: const TextStyle(color: Colors.white70),
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
@@ -107,10 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: TextField(
                       controller: _controllerEmail,
-                      decoration: const InputDecoration(
-                        hintText: "حساب البريد",
-                        hintStyle: TextStyle(color: Colors.white70),
-                        focusedBorder: UnderlineInputBorder(
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.email.tr(),
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
                       ),
@@ -125,10 +129,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: TextField(
                       controller: _controllerPassword,
-                      decoration: const InputDecoration(
-                        hintText: "كلمة السر",
-                        hintStyle: TextStyle(color: Colors.white70),
-                        focusedBorder: UnderlineInputBorder(
+                      decoration: InputDecoration(
+                        hintText: LocaleKeys.password.tr(),
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
                       ),
@@ -142,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextButton(
                         onPressed: () => setState(() => newAccount = true),
                         child: Text(
-                          "إنشاء حساب جديد",
+                          LocaleKeys.new_account.tr(),
                           style: TextStyle(
                             color: newAccount ? Colors.white : Colors.black,
                             fontSize: 18,
@@ -152,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextButton(
                         onPressed: () => setState(() => newAccount = false),
                         child: Text(
-                          "لدي حساب قديم",
+                          LocaleKeys.existing_account.tr(),
                           style: TextStyle(
                             color: !newAccount ? Colors.white : Colors.black,
                             fontSize: 18,
@@ -178,7 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.black,
                               )
                               : Text(
-                                newAccount ? 'إنشاء الحساب' : 'تسجيل الدخول',
+                                newAccount
+                                    ? LocaleKeys.create_account.tr()
+                                    : LocaleKeys.login.tr(),
                                 style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.black,

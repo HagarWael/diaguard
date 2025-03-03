@@ -9,23 +9,37 @@ Widget buildUserButton(
   VoidCallback onPressed,
 ) {
   return SizedBox(
-    width: 158,
-    height: 198,
+    width: 160,
+    height: 200,
     child: ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.background,
-        elevation: 0.0,
+        elevation: 2.0, // Add a slight elevation for a better look
+        shadowColor: Colors.black26, // Light shadow effect
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        padding: EdgeInsets.zero, // Ensure no extra padding around the content
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Center content
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Image.asset(imagePath, width: 80, height: 80),
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Image.asset(
+              imagePath,
+              width: 80,
+              height: 80,
+              fit: BoxFit.contain,
+            ),
           ),
-          const SizedBox(height: 15),
-          Text(text, style: TextStyles.headline1),
+          const SizedBox(height: 12),
+          Text(
+            text,
+            style: TextStyles.headline1.copyWith(
+              fontSize: 18,
+            ), // Ensure readable font size
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     ),

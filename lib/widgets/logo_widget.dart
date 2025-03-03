@@ -8,7 +8,7 @@ class LogoWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Image.asset(
-        "images/logo.jpg",
+        "assets/images/logo.jpg",
         width: 200,
         height: 150,
         fit: BoxFit.contain,

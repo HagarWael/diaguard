@@ -3,13 +3,13 @@ import 'app_color.dart';
 
 class TextStyles {
   static const TextStyle headline1 = TextStyle(
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
 
   static const TextStyle bodyText = TextStyle(
-    fontSize: 16,
+    fontSize: 10,
     color: AppColors.textSecondary,
   );
 }
