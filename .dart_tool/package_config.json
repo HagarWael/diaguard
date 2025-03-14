@@ -32,6 +32,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "bloc",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/bloc-9.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/boolean_selector-2.1.2",
       "packageUri": "lib/",
@@ -92,6 +98,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "date_format",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/date_format-2.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "easy_localization",
       "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/easy_localization-3.0.7+1",
       "packageUri": "lib/",
@@ -100,6 +112,12 @@
     {
       "name": "easy_logger",
       "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/easy_logger-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "equatable",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/equatable-2.0.7",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -126,6 +144,12 @@
       "rootUri": "file:///Users/hager/development/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.7"
+    },
+    {
+      "name": "flutter_bloc",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/flutter_bloc-9.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "flutter_gen",
@@ -302,6 +326,18 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "modal_bottom_sheet",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/modal_bottom_sheet-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "nested",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "package_config",
       "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/package_config-2.1.1",
       "packageUri": "lib/",
@@ -378,6 +414,12 @@
       "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/posix-6.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/provider-6.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "pub_semver",
@@ -548,7 +590,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-03-03T20:13:44.324581Z",
+  "generated": "2025-03-13T10:17:31.592220Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///Users/hager/development/flutter",

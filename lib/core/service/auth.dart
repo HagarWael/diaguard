@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService {
-  final String baseUrl = 'http://10.0.2.2:8080';
+  final String baseUrl = 'http://10.0.2.2:3000';
   final storage = FlutterSecureStorage();
 
   Future<String> login(String email, String password) async {
@@ -24,7 +24,7 @@ class AuthService {
     }
   }
 
-  Future<String> signup(String email, String password, String fullName) async {
+  Future<String> signup(String fullName, String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/auth/signup'),
       headers: <String, String>{

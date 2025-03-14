@@ -4,6 +4,7 @@ import 'package:diaguard1/widgets/gradientContainer.dart';
 import 'package:diaguard1/widgets/logo_widget.dart';
 import 'package:diaguard1/core/localization/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:diaguard1/features/patient/patientScreens/homepatient.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -52,7 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (responseMessage.contains(LocaleKeys.successful.tr()) && !newAccount) {
-      Navigator.pushReplacementNamed(context, '/homepatient');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePatientScreen()),
+      );
     }
   }
 

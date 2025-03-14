@@ -55,7 +55,7 @@ class _AppUserState extends State<AppUser> {
                       buildUserButton(
                         context,
                         "assets/images/Doctor.png",
-                        tr("doctor"), // Translated Text
+                        tr("doctor"),
                         () {
                           choice = true;
                           Navigator.of(context).push(
@@ -68,7 +68,7 @@ class _AppUserState extends State<AppUser> {
                       buildUserButton(
                         context,
                         "assets/images/patient.png",
-                        tr("patient"), // Translated Text
+                        tr("patient"),
                         () {
                           choice = false;
                           Navigator.of(context).push(
