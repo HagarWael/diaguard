@@ -15,6 +15,8 @@ late String arabicDay;
 late String englishDay;
 
 class PatientInformation extends StatefulWidget {
+  const PatientInformation({Key? key}) : super(key: key);
+
   @override
   _PatientInformationState createState() => _PatientInformationState();
 }
@@ -42,8 +44,6 @@ class _PatientInformationState extends State<PatientInformation> {
     screenWidth = MediaQuery.of(context).size.width;
     textScale = MediaQuery.of(context).textScaleFactor;
 
-    String namePA = "هاجر وائل "; // Replace with actual patient name
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -56,7 +56,6 @@ class _PatientInformationState extends State<PatientInformation> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                /// Welcome statement with name of user
                 Padding(
                   padding: const EdgeInsets.only(bottom: 25.0),
                   child: Center(
@@ -76,7 +75,7 @@ class _PatientInformationState extends State<PatientInformation> {
                                 color: Color.fromRGBO(139, 139, 139, 1),
                               ),
                             ),
-                            Text(namePA, style: TextStyle(fontSize: 24)),
+                            Text('Patient Name', style: TextStyle(fontSize: 24)),
                           ],
                         ),
                       ],
@@ -84,7 +83,6 @@ class _PatientInformationState extends State<PatientInformation> {
                   ),
                 ),
 
-                /// Two buttons "before" & "after"
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Row(

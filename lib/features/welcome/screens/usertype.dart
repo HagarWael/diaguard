@@ -8,8 +8,6 @@ import 'package:diaguard1/widgets/logo_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:diaguard1/features/welcome/widgets/user_selection.dart';
 
-late bool choice;
-
 class AppUser extends StatefulWidget {
   const AppUser({super.key});
 
@@ -57,10 +55,12 @@ class _AppUserState extends State<AppUser> {
                         "assets/images/Doctor.png",
                         tr("doctor"),
                         () {
-                          choice = true;
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const LoginscreenD(),
+                              builder:
+                                  (context) => const LoginScreen(
+                                    role: 'doctor',
+                                  ), // Pass role
                             ),
                           );
                         },
@@ -70,10 +70,12 @@ class _AppUserState extends State<AppUser> {
                         "assets/images/patient.png",
                         tr("patient"),
                         () {
-                          choice = false;
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                              builder:
+                                  (context) => const LoginScreen(
+                                    role: 'patient',
+                                  ), // Pass role
                             ),
                           );
                         },

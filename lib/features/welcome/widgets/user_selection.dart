@@ -15,13 +15,13 @@ Widget buildUserButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.background,
-        elevation: 2.0, // Add a slight elevation for a better look
-        shadowColor: Colors.black26, // Light shadow effect
+        elevation: 2.0,
+        shadowColor: Colors.black26,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        padding: EdgeInsets.zero, // Ensure no extra padding around the content
+        padding: EdgeInsets.zero,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Center content
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -35,9 +35,7 @@ Widget buildUserButton(
           const SizedBox(height: 12),
           Text(
             text,
-            style: TextStyles.headline1.copyWith(
-              fontSize: 18,
-            ), // Ensure readable font size
+            style: TextStyles.headline1.copyWith(fontSize: 18),
             textAlign: TextAlign.center,
           ),
         ],

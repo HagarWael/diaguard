@@ -5,7 +5,8 @@ import 'package:diaguard1/features/welcome/screens/usertype.dart';
 import 'package:diaguard1/features/patient/patientScreens/questions.dart';
 import 'package:diaguard1/features/questionnaire/bloC/questionBloC.dart';
 import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
-import 'package:diaguard1/features/patient/patientScreens/patientprofile.dart';
+import 'package:diaguard1/features/patient/patientScreens/patient_list.dart';
+import 'package:diaguard1/features/patient/menu/patient_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
-      home: BarHome(),
+      home: AppUser(),
     );
   }
 }

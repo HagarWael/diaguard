@@ -7,12 +7,14 @@ import 'package:diaguard1/features/questionnaire/widgets/question_widget.dart';
 import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 
 class QuestionScreen extends StatelessWidget {
+  const QuestionScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => QuestionBloc(),
       child: Scaffold(
-        appBar: AppBar(title: Text("Health Questions")),
+        appBar: AppBar(title: const Text("Health Questions")),
         body: BlocBuilder<QuestionBloc, QuestionState>(
           builder: (context, state) {
             int currentIndex = state.currentQuestionIndex;
@@ -27,9 +29,11 @@ class QuestionScreen extends StatelessWidget {
                     AnswerSelected(questionIndex: currentIndex, answer: answer),
                   );
 
+                  // Check if all questions are answered
                   if (currentIndex == questions.length - 1) {
-                    Future.delayed(Duration(milliseconds: 500), () {
-                      Navigator.pushReplacementNamed(context, '/homepatient');
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      // Trigger the onComplete callback (if needed)
+                      // You can add logic here if required
                     });
                   }
                 },
