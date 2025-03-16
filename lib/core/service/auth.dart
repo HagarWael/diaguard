@@ -7,7 +7,7 @@ class AuthService {
   final String baseUrl = 'http://10.0.2.2:3000';
   final storage = FlutterSecureStorage();
 
-  Future<String> login({
+  Future<Map<String, dynamic>> login({
     required String email,
     required String password,
     required String role,
@@ -35,7 +35,11 @@ class AuthService {
           throw Exception('Token is null in the response');
         }
         await storeToken(token);
-        return 'successful';
+        return {
+          'status': 'successful',
+          'token': token,
+          'user': {'email': email, 'role': role},
+        };
       } else {
         throw Exception('Failed to login: ${response.body}');
       }
@@ -45,7 +49,7 @@ class AuthService {
     }
   }
 
-  Future<String> signup({
+  Future<Map<String, dynamic>> signup({
     required String fullName,
     required String email,
     required String password,
@@ -65,19 +69,23 @@ class AuthService {
         }),
       );
 
-      print(
-        "Signup response status code: ${response.statusCode}",
-      ); // Debug print
+      print("Signup response status code: ${response.statusCode}");
       print("Signup response body: ${response.body}");
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
-        final token = responseBody['response']['token'];
+
+        final responseData = responseBody['response'];
+        final token = responseData['token'];
+        final user = responseData['user'];
+
         if (token == null) {
-          throw Exception('Token is null in the response');
+          throw Exception('token is null in the response');
         }
+
         await storeToken(token);
-        return 'successful';
+
+        return {'status': 'successful', 'token': token, 'user': user};
       } else {
         throw Exception('Failed to sign up: ${response.body}');
       }

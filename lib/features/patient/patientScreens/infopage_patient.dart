@@ -3,6 +3,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'dart:ui';
 import 'package:date_format/date_format.dart';
+import 'package:diaguard1/core/theme/app_color.dart';
 
 late double before;
 late double after;
@@ -15,7 +16,10 @@ late String arabicDay;
 late String englishDay;
 
 class PatientInformation extends StatefulWidget {
-  const PatientInformation({Key? key}) : super(key: key);
+  final String userName;
+
+  const PatientInformation({Key? key, required this.userName})
+    : super(key: key);
 
   @override
   _PatientInformationState createState() => _PatientInformationState();
@@ -43,6 +47,7 @@ class _PatientInformationState extends State<PatientInformation> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     textScale = MediaQuery.of(context).textScaleFactor;
+    print("User Name in PatientInformation: ${widget.userName}");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,7 +80,10 @@ class _PatientInformationState extends State<PatientInformation> {
                                 color: Color.fromRGBO(139, 139, 139, 1),
                               ),
                             ),
-                            Text('Patient Name', style: TextStyle(fontSize: 24)),
+                            Text(
+                              widget.userName,
+                              style: TextStyle(fontSize: 24),
+                            ),
                           ],
                         ),
                       ],
@@ -187,12 +195,8 @@ class _PatientInformationState extends State<PatientInformation> {
                                                           style: TextStyle(
                                                             fontSize: 24,
                                                             color:
-                                                                Color.fromRGBO(
-                                                                  52,
-                                                                  91,
-                                                                  99,
-                                                                  1,
-                                                                ),
+                                                                AppColors
+                                                                    .background,
                                                           ),
                                                         ),
                                                       ),
@@ -748,7 +752,6 @@ class _PatientInformationState extends State<PatientInformation> {
     );
   }
 
-  /// Before readings list
   List<Widget> callingListBefore(List<double> readings, List<String> dates) {
     cardListBefore.clear();
     fillCardsBefore(readings, dates);
@@ -773,7 +776,7 @@ class _PatientInformationState extends State<PatientInformation> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          color: Color.fromRGBO(52, 91, 99, 0.81),
+          color: AppColors.secondary,
           elevation: 10.0,
           child: SizedBox(
             height: screenHeight * 0.15,
@@ -976,6 +979,7 @@ class _PatientInformationState extends State<PatientInformation> {
     fillCardsBefore;
     cardListBefore;
     cardListAfter;
+    // print("User Name in PatientInformation: ${widget.userName}");
   }
 
   @override

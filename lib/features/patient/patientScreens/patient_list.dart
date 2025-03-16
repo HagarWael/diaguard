@@ -2,12 +2,13 @@ import 'package:diaguard1/features/patient/patientScreens/questions.dart';
 import 'package:flutter/material.dart';
 import 'infopage_patient.dart';
 import 'package:diaguard1/features/patient/menu/twasel.dart';
+import 'package:diaguard1/core/theme/app_color.dart';
+import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 
 class BarHome extends StatefulWidget {
-  final String token; // Add token parameter
-  final String name; // Add name parameter
-  const BarHome({Key? key, required this.token, required this.name})
-    : super(key: key);
+  final String userName;
+
+  const BarHome({Key? key, required this.userName}) : super(key: key);
 
   @override
   _BarHomeState createState() => _BarHomeState();
@@ -15,15 +16,15 @@ class BarHome extends StatefulWidget {
 
 class _BarHomeState extends State<BarHome> {
   final PageController _pageController = PageController();
-  late List<Widget> _screens; // Initialize dynamically
+  late List<Widget> _screens;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // Initialize screens with required parameters
+
     _screens = [
-      PatientInformation(), // Pass token and name
+      PatientInformation(userName: widget.userName),
       QuestionScreen(),
     ];
   }
@@ -50,14 +51,14 @@ class _BarHomeState extends State<BarHome> {
             color: Colors.white,
             size: 68,
           ),
-          const SizedBox(width: 10), // Added spacing
+          const SizedBox(width: 10),
           Text(
-            widget.name, // Use the name passed from the constructor
-            style: TextStyle(color: Colors.white, fontSize: 30),
+            widget.userName,
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ],
       ),
-      accountEmail: Text(''), // Empty email
+      accountEmail: Text(''), // empty email
     );
 
     final drawerItems = ListView(
@@ -80,7 +81,7 @@ class _BarHomeState extends State<BarHome> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => QuestionScreen()),
+              MaterialPageRoute(builder: (context) => ChartLabsPage()),
             );
           },
         ),
@@ -95,7 +96,7 @@ class _BarHomeState extends State<BarHome> {
               const SizedBox(width: 15),
               Text(
                 'تواصل معنا',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(color: AppColors.background, fontSize: 20),
               ),
             ],
           ),
@@ -112,7 +113,7 @@ class _BarHomeState extends State<BarHome> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         iconTheme: IconThemeData(
           color: Color.fromRGBO(53, 91, 93, 1),
           size: 30,
@@ -137,7 +138,7 @@ class _BarHomeState extends State<BarHome> {
         controller: _pageController,
         children: _screens,
         onPageChanged: _onPageChanged,
-        physics: NeverScrollableScrollPhysics(), // Disable swiping
+        physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
@@ -157,7 +158,7 @@ class _BarHomeState extends State<BarHome> {
           showUnselectedLabels: false,
           backgroundColor: Color.fromRGBO(242, 244, 241, 1),
           onTap: _onItemTapped,
-          currentIndex: _selectedIndex, // Added currentIndex
+          currentIndex: _selectedIndex,
           items: const [
             BottomNavigationBarItem(
               icon: ImageIcon(AssetImage("assets/images/home.png"), size: 30),

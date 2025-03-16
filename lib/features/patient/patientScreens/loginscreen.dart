@@ -1,12 +1,12 @@
-import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
+import 'package:diaguard1/features/patient/patientScreens/patient_list.dart';
 import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
+import 'package:diaguard1/features/patient/patientScreens/questions.dart';
+import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
 import 'package:diaguard1/widgets/gradientContainer.dart';
 import 'package:diaguard1/widgets/logo_widget.dart';
 import 'package:diaguard1/core/localization/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-import 'package:diaguard1/features/patient/patientScreens/questions.dart';
 
 class LoginScreen extends StatefulWidget {
   final String role;
@@ -34,52 +34,52 @@ class _LoginScreenState extends State<LoginScreen> {
       String fullName = _controllerFullName.text.trim();
       String email = _controllerEmail.text.trim();
       String password = _controllerPassword.text.trim();
-      String responseMessage;
+      dynamic response;
 
       if (newAccount) {
-        responseMessage = await _authService.signup(
+        response = await _authService.signup(
           fullName: fullName,
           email: email,
           password: password,
           role: widget.role,
         );
       } else {
-        responseMessage = await _authService.login(
+        response = await _authService.login(
           email: email,
           password: password,
           role: widget.role,
         );
       }
 
-      print("Response from backend: $responseMessage");
+      // print("Response from backend: $response");
 
       setState(() {
         _isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(responseMessage),
-          backgroundColor:
-              responseMessage.contains('successful')
-                  ? Colors.green
-                  : Colors.red,
-        ),
-      );
+      if (response['status'] == 'successful') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('successful'), backgroundColor: Colors.green),
+        );
 
-      if (responseMessage.contains('successful')) {
-        if (!newAccount) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => PatientInformation()),
-          );
-        } else {
+        if (newAccount) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => QuestionScreen()),
           );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => BarHome(userName: fullName),
+            ),
+          );
         }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('failed'), backgroundColor: Colors.red),
+        );
       }
     } catch (e) {
-      print("Error in _handleAuth: $e");
+      print("error in _handleAuth fun: $e");
       setState(() {
         _isLoading = false;
       });
