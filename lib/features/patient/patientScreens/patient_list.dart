@@ -4,6 +4,7 @@ import 'infopage_patient.dart';
 import 'package:diaguard1/features/patient/menu/twasel.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
+import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
 
 class BarHome extends StatefulWidget {
   final String userName;

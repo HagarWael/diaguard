@@ -31,14 +31,22 @@ class AuthService {
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         final token = responseBody['response']['token'];
-        if (token == null) {
-          throw Exception('Token is null in the response');
+        final user =
+            responseBody['response']['user']; // Extract the user object
+
+        if (token == null || user == null) {
+          throw Exception('Token or user is null in the response');
         }
+
         await storeToken(token);
         return {
           'status': 'successful',
           'token': token,
-          'user': {'email': email, 'role': role},
+          'user': {
+            'email': user['email'],
+            'role': user['role'],
+            'fullname': user['fullname'], // Extract the fullname
+          },
         };
       } else {
         throw Exception('Failed to login: ${response.body}');
@@ -74,18 +82,24 @@ class AuthService {
 
       if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
-
         final responseData = responseBody['response'];
         final token = responseData['token'];
-        final user = responseData['user'];
+        final user = responseData['user']; // Extract the user object
 
-        if (token == null) {
-          throw Exception('token is null in the response');
+        if (token == null || user == null) {
+          throw Exception('Token or user is null in the response');
         }
 
         await storeToken(token);
-
-        return {'status': 'successful', 'token': token, 'user': user};
+        return {
+          'status': 'successful',
+          'token': token,
+          'user': {
+            'email': user['email'],
+            'role': user['role'],
+            'fullname': user['fullname'], // Extract the fullname
+          },
+        };
       } else {
         throw Exception('Failed to sign up: ${response.body}');
       }

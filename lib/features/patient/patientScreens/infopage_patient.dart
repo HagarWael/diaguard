@@ -47,7 +47,7 @@ class _PatientInformationState extends State<PatientInformation> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     textScale = MediaQuery.of(context).textScaleFactor;
-    print("User Name in PatientInformation: ${widget.userName}");
+    print("user name in PatientInformation testtttt: ${widget.userName}");
 
     return Scaffold(
       backgroundColor: Colors.white,

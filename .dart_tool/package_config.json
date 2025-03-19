@@ -152,6 +152,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "fl_chart",
+      "rootUri": "file:///Users/hager/.pub-cache/hosted/pub.dev/fl_chart-0.70.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///Users/hager/development/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -668,7 +674,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-03-15T12:08:20.046581Z",
+  "generated": "2025-03-18T09:53:36.163048Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///Users/hager/development/flutter",

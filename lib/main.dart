@@ -1,3 +1,4 @@
+import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,6 +8,7 @@ import 'package:diaguard1/features/questionnaire/bloC/questionBloC.dart';
 import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
 import 'package:diaguard1/features/patient/patientScreens/patient_list.dart';
 import 'package:diaguard1/features/patient/menu/patient_page.dart';
+import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +44,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//usertype: choose=>patientlogin 
+//                   
 //loginpatient => patient profile =>
 //                   | |
 //                    V

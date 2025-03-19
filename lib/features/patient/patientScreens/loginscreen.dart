@@ -2,7 +2,6 @@ import 'package:diaguard1/features/patient/patientScreens/patient_list.dart';
 import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/features/patient/patientScreens/questions.dart';
-import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
 import 'package:diaguard1/widgets/gradientContainer.dart';
 import 'package:diaguard1/widgets/logo_widget.dart';
 import 'package:diaguard1/core/localization/locale_keys.g.dart';
@@ -51,7 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
 
-      // print("Response from backend: $response");
+      // Debug: Print the entire response
+      print("Response from backend: $response");
 
       setState(() {
         _isLoading = false;
@@ -62,6 +62,15 @@ class _LoginScreenState extends State<LoginScreen> {
           SnackBar(content: Text('successful'), backgroundColor: Colors.green),
         );
 
+        // Debug: Print the user object from the response
+        print("User object from response: ${response['user']}");
+
+        // Extract the user's name from the response
+        final String userName =
+            response['user']['fullname'] ??
+            'User'; // Use 'fullname' from the response
+        print("Extracted user name: $userName");
+
         if (newAccount) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => QuestionScreen()),
@@ -69,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => BarHome(userName: fullName),
+              builder: (context) => BarHome(userName: userName),
             ),
           );
         }
