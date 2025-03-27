@@ -45,7 +45,7 @@ class AuthService {
           'user': {
             'email': user['email'],
             'role': user['role'],
-            'fullname': user['fullname'], // Extract the fullname
+            'fullname': user['fullname'],
           },
         };
       } else {

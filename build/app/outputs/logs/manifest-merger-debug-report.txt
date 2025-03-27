@@ -31,6 +31,7 @@ INJECTED from /Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManif
 INJECTED from /Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 MERGED from [:shared_preferences_android] /Users/hager/Downloads/diaguard/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:fluttertoast] /Users/hager/Downloads/diaguard/build/fluttertoast/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-22:12
 MERGED from [androidx.preference:preference:1.2.1] /Users/hager/.gradle/caches/8.10.2/transforms/12a085f4af97d8500c9432a48145ea1b/transformed/preference-1.2.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /Users/hager/.gradle/caches/8.10.2/transforms/159a470d7aae973f3fe188f99bb68c27/transformed/jetified-appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
@@ -123,6 +124,8 @@ INJECTED from /Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManif
 INJECTED from /Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManifest.xml
 MERGED from [:shared_preferences_android] /Users/hager/Downloads/diaguard/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences_android] /Users/hager/Downloads/diaguard/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] /Users/hager/Downloads/diaguard/build/fluttertoast/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] /Users/hager/Downloads/diaguard/build/fluttertoast/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-44
 MERGED from [:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-44
 MERGED from [androidx.preference:preference:1.2.1] /Users/hager/.gradle/caches/8.10.2/transforms/12a085f4af97d8500c9432a48145ea1b/transformed/preference-1.2.1/AndroidManifest.xml:20:5-22:41

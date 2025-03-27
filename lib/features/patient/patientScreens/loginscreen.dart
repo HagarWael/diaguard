@@ -62,23 +62,24 @@ class _LoginScreenState extends State<LoginScreen> {
           SnackBar(content: Text('successful'), backgroundColor: Colors.green),
         );
 
-        // Debug: Print the user object from the response
         print("User object from response: ${response['user']}");
 
         // Extract the user's name from the response
-        final String userName =
-            response['user']['fullname'] ??
-            'User'; // Use 'fullname' from the response
+        final String userName = response['user']['fullname'] ?? 'User';
         print("Extracted user name: $userName");
 
         if (newAccount) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => QuestionScreen()),
+            MaterialPageRoute(
+              builder: (context) => QuestionScreen(authService: _authService),
+            ),
           );
         } else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => BarHome(userName: userName),
+              builder:
+                  (context) =>
+                      BarHome(userName: userName, authService: _authService),
             ),
           );
         }

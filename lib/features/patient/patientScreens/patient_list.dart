@@ -5,11 +5,14 @@ import 'package:diaguard1/features/patient/menu/twasel.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
+import 'package:diaguard1/core/service/auth.dart'; // Import AuthService
 
 class BarHome extends StatefulWidget {
   final String userName;
+  final AuthService authService;
 
-  const BarHome({Key? key, required this.userName}) : super(key: key);
+  const BarHome({Key? key, required this.userName, required this.authService})
+    : super(key: key);
 
   @override
   _BarHomeState createState() => _BarHomeState();
@@ -25,8 +28,11 @@ class _BarHomeState extends State<BarHome> {
     super.initState();
 
     _screens = [
-      PatientInformation(userName: widget.userName),
-      QuestionScreen(),
+      PatientInformation(
+        userName: widget.userName,
+        authService: widget.authService,
+      ),
+      QuestionScreen(authService: widget.authService),
     ];
   }
 
@@ -59,7 +65,7 @@ class _BarHomeState extends State<BarHome> {
           ),
         ],
       ),
-      accountEmail: Text(''), // empty email
+      accountEmail: Text(''),
     );
 
     final drawerItems = ListView(
@@ -109,6 +115,34 @@ class _BarHomeState extends State<BarHome> {
           },
         ),
         Divider(thickness: 1, color: Colors.white, indent: 30, endIndent: 30),
+        ListTile(
+          title: Row(
+            children: [
+              ImageIcon(
+                AssetImage('assets/images/logout.png'),
+                color: Colors.white,
+              ),
+              const SizedBox(width: 15),
+              Text(
+                'تسجيل الخروج',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
+          onTap: () async {
+            try {
+              await widget.authService.logout();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login',
+                (Route<dynamic> route) => false,
+              );
+            } catch (e) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Failed to logout: $e')));
+            }
+          },
+        ),
       ],
     );
 
@@ -121,6 +155,15 @@ class _BarHomeState extends State<BarHome> {
         ),
         automaticallyImplyLeading: false,
         elevation: 0.0,
+        actions: [
+          Builder(
+            builder:
+                (context) => IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                ),
+          ),
+        ],
       ),
       endDrawer: Directionality(
         textDirection: TextDirection.rtl,

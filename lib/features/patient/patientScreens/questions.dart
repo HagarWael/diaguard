@@ -5,10 +5,16 @@ import 'package:diaguard1/features/questionnaire/bloC/questionEvent.dart';
 import 'package:diaguard1/features/questionnaire/bloC/questionState.dart';
 import 'package:diaguard1/features/questionnaire/widgets/question_widget.dart';
 import 'package:diaguard1/features/questionnaire/data/question_data.dart';
-import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart'; // Import the infopatient.dart file
+import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
+import 'package:diaguard1/core/service/auth.dart'; // Import AuthService
 
 class QuestionScreen extends StatelessWidget {
-  const QuestionScreen({Key? key}) : super(key: key);
+  final AuthService authService; // Add AuthService parameter
+
+  const QuestionScreen({
+    Key? key,
+    required this.authService, // Make it required
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,10 @@ class QuestionScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder:
-                              (context) => PatientInformation(userName: answer),
+                              (context) => PatientInformation(
+                                userName: answer,
+                                authService: authService, // Pass authService
+                              ),
                         ),
                       );
                     });

@@ -4,6 +4,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'dart:ui';
 import 'package:date_format/date_format.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
+import 'package:diaguard1/core/service/glucose_service.dart';
+import 'package:diaguard1/core/service/auth.dart';
 
 late double before;
 late double after;
@@ -17,9 +19,13 @@ late String englishDay;
 
 class PatientInformation extends StatefulWidget {
   final String userName;
+  final AuthService authService;
 
-  const PatientInformation({Key? key, required this.userName})
-    : super(key: key);
+  const PatientInformation({
+    Key? key,
+    required this.userName,
+    required this.authService,
+  }) : super(key: key);
 
   @override
   _PatientInformationState createState() => _PatientInformationState();
@@ -36,18 +42,51 @@ class _PatientInformationState extends State<PatientInformation> {
   late double screenWidth;
   late double textScale;
   bool loading = true;
+  late GlucoseService glucoseService;
 
-  List<double> beforeReadings = [];
-  List<String> beforeReadingsDateArabic = [];
-  List<double> afterReadings = [];
-  List<String> afterReadingsDateArabic = [];
+  List<dynamic> beforeReadings = [];
+  List<dynamic> afterReadings = [];
+
+  @override
+  void initState() {
+    super.initState();
+    glucoseService = GlucoseService(authService: widget.authService);
+    _loadReadings();
+  }
+
+  Future<void> _loadReadings() async {
+    try {
+      final readings = await glucoseService.getReadings();
+      setState(() {
+        beforeReadings = readings.where((r) => r['type'] == 'fasting').toList();
+        afterReadings =
+            readings.where((r) => r['type'] == 'postprandial').toList();
+      });
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to load readings: $e')));
+    }
+  }
+
+  Future<void> _saveReading(double value, String type) async {
+    try {
+      await glucoseService.saveReading(value, type);
+      await _loadReadings();
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to save reading: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     textScale = MediaQuery.of(context).textScaleFactor;
-    print("user name in PatientInformation testtttt: ${widget.userName}");
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -122,10 +161,7 @@ class _PatientInformationState extends State<PatientInformation> {
                                     color: Colors.grey.withOpacity(0.4),
                                     spreadRadius: 2,
                                     blurRadius: 10,
-                                    offset: Offset(
-                                      0,
-                                      8,
-                                    ), // changes position of shadow
+                                    offset: Offset(0, 8),
                                   ),
                                 ],
                               ),
@@ -308,7 +344,7 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                   1,
                                                                 ),
                                                           ),
-                                                          onPressed: () {
+                                                          onPressed: () async {
                                                             setState(() {
                                                               time();
                                                               timeInEnglish();
@@ -326,7 +362,8 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                       context,
                                                                   builder:
                                                                       (
-                                                                        BuildContextcontext,
+                                                                        BuildContext
+                                                                        context,
                                                                       ) => AlertDialog(
                                                                         title: const Text(
                                                                           'ERROR',
@@ -352,14 +389,10 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                       ),
                                                                 );
                                                               } else {
-                                                                beforeReadings
-                                                                    .add(
-                                                                      before,
-                                                                    );
-                                                                beforeReadingsDateArabic
-                                                                    .add(
-                                                                      cardDay,
-                                                                    );
+                                                                _saveReading(
+                                                                  before,
+                                                                  'fasting',
+                                                                );
                                                                 _reading
                                                                     .clear();
                                                                 Navigator.pop(
@@ -418,10 +451,7 @@ class _PatientInformationState extends State<PatientInformation> {
                                       color: Colors.grey.withOpacity(0.4),
                                       spreadRadius: 2,
                                       blurRadius: 10,
-                                      offset: Offset(
-                                        0,
-                                        8,
-                                      ), // changes position of shadow
+                                      offset: Offset(0, 8),
                                     ),
                                   ],
                                 ),
@@ -617,7 +647,7 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                     1,
                                                                   ),
                                                             ),
-                                                            onPressed: () {
+                                                            onPressed: () async {
                                                               setState(() {
                                                                 time();
                                                                 timeInEnglish();
@@ -636,7 +666,8 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                         context,
                                                                     builder:
                                                                         (
-                                                                          BuildContextcontext,
+                                                                          BuildContext
+                                                                          context,
                                                                         ) => AlertDialog(
                                                                           title: const Text(
                                                                             'ERROR',
@@ -661,14 +692,10 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                         ),
                                                                   );
                                                                 } else {
-                                                                  afterReadings
-                                                                      .add(
-                                                                        after,
-                                                                      );
-                                                                  afterReadingsDateArabic
-                                                                      .add(
-                                                                        cardDay,
-                                                                      );
+                                                                  _saveReading(
+                                                                    after,
+                                                                    'postprandial',
+                                                                  );
                                                                   _reading
                                                                       .clear();
                                                                   Navigator.pop(
@@ -725,24 +752,14 @@ class _PatientInformationState extends State<PatientInformation> {
                 SingleChildScrollView(
                   physics: PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: callingListBefore(
-                      beforeReadings,
-                      beforeReadingsDateArabic,
-                    ),
-                  ),
+                  child: Row(children: callingListBefore(beforeReadings)),
                 ),
 
                 /// Row of "after readings"
                 SingleChildScrollView(
                   physics: PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: callingListAfter(
-                      afterReadings,
-                      afterReadingsDateArabic,
-                    ),
-                  ),
+                  child: Row(children: callingListAfter(afterReadings)),
                 ),
               ],
             ),
@@ -752,21 +769,19 @@ class _PatientInformationState extends State<PatientInformation> {
     );
   }
 
-  List<Widget> callingListBefore(List<double> readings, List<String> dates) {
+  List<Widget> callingListBefore(List<dynamic> readings) {
     cardListBefore.clear();
-    fillCardsBefore(readings, dates);
+    fillCardsBefore(readings);
     return cardListBefore;
   }
 
-  void fillCardsBefore(List<double> readings, List<String> dates) {
+  void fillCardsBefore(List<dynamic> readings) {
     for (var i = readings.length - 1; i >= 0; i--) {
-      String read = readings[i].toString();
-      String date = dates[i].toString();
-      cardListBefore.add(beforeCard(read, date));
+      cardListBefore.add(beforeCard(readings[i]));
     }
   }
 
-  Widget beforeCard(final String read, final String dateC) {
+  Widget beforeCard(final dynamic reading) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
@@ -797,9 +812,9 @@ class _PatientInformationState extends State<PatientInformation> {
                         ),
                       ),
                       Text(
-                        double.parse(read) >= 130.0
+                        reading['value'] >= 130.0
                             ? 'مرتفع'
-                            : double.parse(read) <= 80.0
+                            : reading['value'] <= 80.0
                             ? 'منخفض'
                             : 'طبيعي',
                         style: TextStyle(
@@ -808,7 +823,9 @@ class _PatientInformationState extends State<PatientInformation> {
                         ),
                       ),
                       Text(
-                        '$dateC',
+                        reading['date'] != null
+                            ? _formatDate(reading['date'])
+                            : 'No date',
                         style: TextStyle(
                           fontSize: 12 * textScale,
                           color: Colors.white,
@@ -818,7 +835,7 @@ class _PatientInformationState extends State<PatientInformation> {
                   ),
                 ),
                 Text(
-                  '$read',
+                  '${reading['value']}',
                   style: TextStyle(
                     fontSize: 40,
                     color: Colors.white,
@@ -834,21 +851,19 @@ class _PatientInformationState extends State<PatientInformation> {
   }
 
   /// After readings list
-  List<Widget> callingListAfter(List<double> readings, List<String> dates) {
+  List<Widget> callingListAfter(List<dynamic> readings) {
     cardListAfter.clear();
-    fillCardsAfter(readings, dates);
+    fillCardsAfter(readings);
     return cardListAfter;
   }
 
-  void fillCardsAfter(List<double> readings, List<String> dates) {
+  void fillCardsAfter(List<dynamic> readings) {
     for (var i = readings.length - 1; i >= 0; i--) {
-      String read = readings[i].toString();
-      String date = dates[i].toString();
-      cardListAfter.add(afterCard(read, date));
+      cardListAfter.add(afterCard(readings[i]));
     }
   }
 
-  Widget afterCard(final String read, final String dateC) {
+  Widget afterCard(final dynamic reading) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, bottom: 10.0, left: 20),
       child: Card(
@@ -861,12 +876,10 @@ class _PatientInformationState extends State<PatientInformation> {
           width: screenWidth * 0.8,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 15.0),
                 child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -877,10 +890,9 @@ class _PatientInformationState extends State<PatientInformation> {
                       ),
                     ),
                     Text(
-                      //TODO this should be a variable depending on the users reading , compare to baseline thr print the state , normal , high, low
-                      double.parse(read) >= 180.0
+                      reading['value'] >= 180.0
                           ? 'مرتفع'
-                          : double.parse(read) <= 130.0
+                          : reading['value'] <= 130.0
                           ? 'منخفض'
                           : 'طبيعي',
                       style: TextStyle(
@@ -889,7 +901,9 @@ class _PatientInformationState extends State<PatientInformation> {
                       ),
                     ),
                     Text(
-                      '$dateC',
+                      reading['date'] != null
+                          ? _formatDate(reading['date'])
+                          : 'No date',
                       style: TextStyle(
                         fontSize: 12 * textScale,
                         color: Colors.white,
@@ -899,23 +913,48 @@ class _PatientInformationState extends State<PatientInformation> {
                 ),
               ),
               Text(
-                '$read',
+                '${reading['value']}',
                 style: TextStyle(
                   fontSize: 40,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-
-              // Text(formattedDate(
-              //     document.data()['data']
-              // )
-              // ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  String _formatDate(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return '${_getArabicDay(date.weekday)} - ${date.hour}:${date.minute.toString().padLeft(2, '0')} - ${date.hour < 12 ? 'صباحا' : 'مساءا'}';
+    } catch (e) {
+      return 'Invalid date';
+    }
+  }
+
+  String _getArabicDay(int weekday) {
+    switch (weekday) {
+      case 1:
+        return 'الاثنين';
+      case 2:
+        return 'الثلثاء';
+      case 3:
+        return 'الاربعاء';
+      case 4:
+        return 'الخميس';
+      case 5:
+        return 'الجمعة';
+      case 6:
+        return 'السبت';
+      case 7:
+        return 'الاحد';
+      default:
+        return '';
+    }
   }
 
   String time() {
@@ -929,57 +968,40 @@ class _PatientInformationState extends State<PatientInformation> {
       wa2t = 'مساءا';
 
     if (dt.weekday == 1)
-      arabicDay = 'الاثنين'; //monday
+      arabicDay = 'الاثنين';
     else if (dt.weekday == 2)
-      arabicDay = 'الثلثاء'; //tues
+      arabicDay = 'الثلثاء';
     else if (dt.weekday == 3)
-      arabicDay = 'الاربعاء'; //wed
+      arabicDay = 'الاربعاء';
     else if (dt.weekday == 4)
-      arabicDay = 'الخميس'; //thurs
+      arabicDay = 'الخميس';
     else if (dt.weekday == 5)
-      arabicDay = 'الحمعة'; //fri
+      arabicDay = 'الجمعة';
     else if (dt.weekday == 6)
-      arabicDay = 'السبت'; //sat
+      arabicDay = 'السبت';
     else if (dt.weekday == 7)
       arabicDay = 'الاحد';
-    //sun
-    return cardDay = '$arabicDay' + ' - ' + '$period' + ' - ' + '$wa2t';
+
+    return cardDay = '$arabicDay - $period - $wa2t';
   }
 
   String timeInEnglish() {
     dt = DateTime.now();
     if (dt.weekday == 1)
-      englishDay = 'mon'; //monday
+      englishDay = 'mon';
     else if (dt.weekday == 2)
-      englishDay = 'tues'; //tues
+      englishDay = 'tues';
     else if (dt.weekday == 3)
-      englishDay = 'wed'; //wed
+      englishDay = 'wed';
     else if (dt.weekday == 4)
-      englishDay = 'thurs'; //thurs
+      englishDay = 'thurs';
     else if (dt.weekday == 5)
-      englishDay = 'fri'; //fri
+      englishDay = 'fri';
     else if (dt.weekday == 6)
-      englishDay = 'sat'; //sat
+      englishDay = 'sat';
     else if (dt.weekday == 7)
       englishDay = 'sun';
-    //sun
     return '$englishDay';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // checkDate();
-    //WidgetsBinding.instance.addPostFrameCallback((_) => checkDate());
-    beforeCard;
-    afterCard;
-    callingListBefore;
-    fillCardsAfter;
-    callingListAfter;
-    fillCardsBefore;
-    cardListBefore;
-    cardListAfter;
-    // print("User Name in PatientInformation: ${widget.userName}");
   }
 
   @override

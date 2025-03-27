@@ -46,6 +46,7 @@ com.example.diaguard1.app-debug-44 /Users/hager/Downloads/diaguard/build/app/int
 com.example.diaguard1.app-debug-45 /Users/hager/Downloads/diaguard/build/file_picker/intermediates/packaged_res/debug/packageDebugResources
 com.example.diaguard1.app-debug-46 /Users/hager/Downloads/diaguard/build/flutter_plugin_android_lifecycle/intermediates/packaged_res/debug/packageDebugResources
 com.example.diaguard1.app-debug-47 /Users/hager/Downloads/diaguard/build/flutter_secure_storage/intermediates/packaged_res/debug/packageDebugResources
-com.example.diaguard1.app-debug-48 /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/packaged_res/debug/packageDebugResources
-com.example.diaguard1.app-debug-49 /Users/hager/Downloads/diaguard/build/path_provider_android/intermediates/packaged_res/debug/packageDebugResources
-com.example.diaguard1.app-debug-50 /Users/hager/Downloads/diaguard/build/shared_preferences_android/intermediates/packaged_res/debug/packageDebugResources
+com.example.diaguard1.app-debug-48 /Users/hager/Downloads/diaguard/build/fluttertoast/intermediates/packaged_res/debug/packageDebugResources
+com.example.diaguard1.app-debug-49 /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/packaged_res/debug/packageDebugResources
+com.example.diaguard1.app-debug-50 /Users/hager/Downloads/diaguard/build/path_provider_android/intermediates/packaged_res/debug/packageDebugResources
+com.example.diaguard1.app-debug-51 /Users/hager/Downloads/diaguard/build/shared_preferences_android/intermediates/packaged_res/debug/packageDebugResources
