@@ -128,11 +128,11 @@ class _BarHomeState extends State<BarHome> {
         ListTile(
           title: Row(
             children: [
-              ImageIcon(
-                AssetImage('assets/images/logout.png'),
-                color: Colors.white,
-              ),
-              const SizedBox(width: 15),
+              // ImageIcon(
+              // //  AssetImage('assets/images/logout.png'),
+              //   color: Colors.white,
+              // ),
+              const SizedBox(width: 10),
               Text(
                 'تسجيل الخروج',
                 style: TextStyle(color: Colors.white, fontSize: 20),
