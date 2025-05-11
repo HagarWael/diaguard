@@ -5,7 +5,8 @@ import 'package:diaguard1/features/patient/menu/twasel.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
-import 'package:diaguard1/core/service/auth.dart'; // Import AuthService
+import 'package:diaguard1/core/service/auth.dart';
+import 'package:diaguard1/core/service/glucose_service.dart';
 
 class BarHome extends StatefulWidget {
   final String userName;
@@ -32,7 +33,9 @@ class _BarHomeState extends State<BarHome> {
         userName: widget.userName,
         authService: widget.authService,
       ),
-      QuestionScreen(authService: widget.authService),
+      ChartLabsPage(
+        glucoseService: GlucoseService(authService: widget.authService),
+      ),
     ];
   }
 
@@ -88,7 +91,14 @@ class _BarHomeState extends State<BarHome> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ChartLabsPage()),
+              MaterialPageRoute(
+                builder:
+                    (context) => ChartLabsPage(
+                      glucoseService: GlucoseService(
+                        authService: widget.authService,
+                      ),
+                    ),
+              ),
             );
           },
         ),

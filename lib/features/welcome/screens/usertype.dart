@@ -58,7 +58,7 @@ class _AppUserState extends State<AppUser> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder:
-                                  (context) => const LoginScreen(
+                                  (context) => const LoginscreenD(
                                     role: 'doctor',
                                   ), // Pass role
                             ),
