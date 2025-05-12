@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
-import 'package:diaguard1/features/doctor/drScreens/homedr.dart';
 import 'package:diaguard1/widgets/gradientContainer.dart';
 import 'package:diaguard1/widgets/logo_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:diaguard1/core/localization/locale_keys.g.dart';
+import 'package:diaguard1/features/doctor/drScreens/listOfPatients.dart';
 
 class LoginscreenD extends StatefulWidget {
   final String role;
@@ -42,11 +42,7 @@ class _LoginscreenDState extends State<LoginscreenD> {
           role: widget.role,
         );
       } else {
-        response = await _authService.login(
-          email: email,
-          password: password,
-          // role: widget.role,
-        );
+        response = await _authService.login(email: email, password: password);
       }
 
       setState(() {
@@ -58,19 +54,13 @@ class _LoginscreenDState extends State<LoginscreenD> {
           SnackBar(content: Text('successful'), backgroundColor: Colors.green),
         );
 
-        final String userName = response['user']['fullname'] ?? 'Doctor';
+        final String userName = response['user']['fullname'] ?? 'د. مجهول';
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder:
-                (context) => DoctorHomeScreen(
-                  userName: userName,
-                  patientId:
-                      response['user']['patientId'] ??
-                      '', // update according to actual field
-                  patientHistory: response['user']['patientHistory'] ?? '',
-                  authService: _authService,
-                ),
+                (context) =>
+                    DoctorPatientListScreen(), // ✅ Navigates to updated screen
           ),
         );
       } else {
