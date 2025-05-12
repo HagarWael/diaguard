@@ -59,14 +59,28 @@ class AuthService {
     required String email,
     required String password,
     required String role,
-    String? doctorCode, // required for patient
+    String? doctorCode,
+    String? emergencyName,
+    String? emergencyPhone,
+    String? emergencyRelationship,
   }) async {
     try {
-      if (role == 'patient' && (doctorCode == null || doctorCode.isEmpty)) {
-        throw Exception('Doctor code is required for patient registration');
+      if (role == 'patient') {
+        if (doctorCode == null || doctorCode.isEmpty) {
+          throw Exception('Doctor code is required for patient registration');
+        }
+
+        if (emergencyName == null ||
+            emergencyName.isEmpty ||
+            emergencyPhone == null ||
+            emergencyPhone.isEmpty) {
+          throw Exception(
+            'Emergency contact name and phone are required for patient registration',
+          );
+        }
       }
 
-      final Map<String, String> body = {
+      final Map<String, dynamic> body = {
         'fullname': fullName,
         'email': email,
         'password': password,
@@ -75,6 +89,11 @@ class AuthService {
 
       if (role == 'patient') {
         body['Code'] = doctorCode!;
+        body['emergencyContact'] = {
+          'name': emergencyName,
+          'phone': emergencyPhone,
+          'relationship': emergencyRelationship ?? 'Family Member',
+        };
       }
 
       final response = await http.post(

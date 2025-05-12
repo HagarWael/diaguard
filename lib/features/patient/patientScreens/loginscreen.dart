@@ -20,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _controllerEmail = TextEditingController();
   final _controllerPassword = TextEditingController();
   final _controllerDoctorCode = TextEditingController();
+  final _controllerEmergencyName = TextEditingController();
+  final _controllerEmergencyPhone = TextEditingController();
+  final _controllerEmergencyRelationship = TextEditingController();
+
   final AuthService _authService = AuthService();
 
   bool newAccount = false;
@@ -35,6 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
       String email = _controllerEmail.text.trim();
       String password = _controllerPassword.text.trim();
       String doctorCode = _controllerDoctorCode.text.trim();
+      String emergencyName = _controllerEmergencyName.text.trim();
+      String emergencyPhone = _controllerEmergencyPhone.text.trim();
+      String emergencyRelationship =
+          _controllerEmergencyRelationship.text.trim();
+
       dynamic response;
 
       if (newAccount) {
@@ -53,19 +62,33 @@ class _LoginScreenState extends State<LoginScreen> {
           return;
         }
 
+        if (widget.role == 'patient' &&
+            (emergencyName.isEmpty || emergencyPhone.isEmpty)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Emergency contact name and phone are required."),
+              backgroundColor: Colors.red,
+            ),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
+
         response = await _authService.signup(
           fullName: fullName,
           email: email,
           password: password,
           role: widget.role,
           doctorCode: widget.role == 'patient' ? doctorCode : null,
+          emergencyName: widget.role == 'patient' ? emergencyName : null,
+          emergencyPhone: widget.role == 'patient' ? emergencyPhone : null,
+          emergencyRelationship:
+              widget.role == 'patient' ? emergencyRelationship : null,
         );
       } else {
-        response = await _authService.login(
-          email: email,
-          password: password,
-          //role: widget.role,
-        );
+        response = await _authService.login(email: email, password: password);
       }
 
       setState(() {
@@ -201,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                     ),
                   ),
-                  if (newAccount && widget.role == 'patient')
+                  if (newAccount && widget.role == 'patient') ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 50.0,
@@ -222,6 +245,68 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0,
+                        vertical: 10,
+                      ),
+                      child: TextField(
+                        controller: _controllerEmergencyName,
+                        decoration: const InputDecoration(
+                          hintText: 'Emergency Contact Name',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0,
+                        vertical: 10,
+                      ),
+                      child: TextField(
+                        controller: _controllerEmergencyPhone,
+                        decoration: const InputDecoration(
+                          hintText: 'Emergency Contact Phone',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0,
+                        vertical: 10,
+                      ),
+                      child: TextField(
+                        controller: _controllerEmergencyRelationship,
+                        decoration: const InputDecoration(
+                          hintText: 'Relationship (optional)',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
