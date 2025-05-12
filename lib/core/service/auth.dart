@@ -10,7 +10,6 @@ class AuthService {
   Future<Map<String, dynamic>> login({
     required String email,
     required String password,
-    required String role,
   }) async {
     try {
       final response = await http.post(
@@ -21,7 +20,6 @@ class AuthService {
         body: jsonEncode(<String, String>{
           'email': email,
           'password': password,
-          'role': role,
         }),
       );
 
@@ -31,8 +29,7 @@ class AuthService {
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         final token = responseBody['response']['token'];
-        final user =
-            responseBody['response']['user']; // Extract the user object
+        final user = responseBody['response']['user'];
 
         if (token == null || user == null) {
           throw Exception('Token or user is null in the response');
@@ -62,19 +59,30 @@ class AuthService {
     required String email,
     required String password,
     required String role,
+    String? doctorCode, // required for patient
   }) async {
     try {
+      if (role == 'patient' && (doctorCode == null || doctorCode.isEmpty)) {
+        throw Exception('Doctor code is required for patient registration');
+      }
+
+      final Map<String, String> body = {
+        'fullname': fullName,
+        'email': email,
+        'password': password,
+        'role': role,
+      };
+
+      if (role == 'patient') {
+        body['Code'] = doctorCode!;
+      }
+
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
-          'fullname': fullName,
-          'email': email,
-          'password': password,
-          'role': role,
-        }),
+        body: jsonEncode(body),
       );
 
       print("Signup response status code: ${response.statusCode}");
@@ -84,7 +92,7 @@ class AuthService {
         final responseBody = jsonDecode(response.body);
         final responseData = responseBody['response'];
         final token = responseData['token'];
-        final user = responseData['user']; // Extract the user object
+        final user = responseData['user'];
 
         if (token == null || user == null) {
           throw Exception('Token or user is null in the response');
@@ -97,7 +105,7 @@ class AuthService {
           'user': {
             'email': user['email'],
             'role': user['role'],
-            'fullname': user['fullname'], // Extract the fullname
+            'fullname': user['fullname'],
           },
         };
       } else {

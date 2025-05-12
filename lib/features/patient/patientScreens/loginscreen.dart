@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _controllerFullName = TextEditingController();
   final _controllerEmail = TextEditingController();
   final _controllerPassword = TextEditingController();
+  final _controllerDoctorCode = TextEditingController();
   final AuthService _authService = AuthService();
 
   bool newAccount = false;
@@ -33,25 +34,39 @@ class _LoginScreenState extends State<LoginScreen> {
       String fullName = _controllerFullName.text.trim();
       String email = _controllerEmail.text.trim();
       String password = _controllerPassword.text.trim();
+      String doctorCode = _controllerDoctorCode.text.trim();
       dynamic response;
 
       if (newAccount) {
+        if (widget.role == 'patient' && doctorCode.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "Doctor code is required for patient registration.",
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
+
         response = await _authService.signup(
           fullName: fullName,
           email: email,
           password: password,
           role: widget.role,
+          doctorCode: widget.role == 'patient' ? doctorCode : null,
         );
       } else {
         response = await _authService.login(
           email: email,
           password: password,
-          role: widget.role,
+          //role: widget.role,
         );
       }
-
-      // Debug: Print the entire response
-      print("Response from backend: $response");
 
       setState(() {
         _isLoading = false;
@@ -59,14 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response['status'] == 'successful') {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('successful'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('Successful'),
+            backgroundColor: Colors.green,
+          ),
         );
 
-        print("User object from response: ${response['user']}");
-
-        // Extract the user's name from the response
         final String userName = response['user']['fullname'] ?? 'User';
-        print("Extracted user name: $userName");
 
         if (newAccount) {
           Navigator.of(context).pushReplacement(
@@ -85,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('failed'), backgroundColor: Colors.red),
+          const SnackBar(content: Text('Failed'), backgroundColor: Colors.red),
         );
       }
     } catch (e) {
@@ -187,6 +201,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                     ),
                   ),
+                  if (newAccount && widget.role == 'patient')
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0,
+                        vertical: 10,
+                      ),
+                      child: TextField(
+                        controller: _controllerDoctorCode,
+                        decoration: const InputDecoration(
+                          hintText: 'Doctor Code',
+                          hintStyle: TextStyle(color: Colors.white70),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                        ),
+                        style: const TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
