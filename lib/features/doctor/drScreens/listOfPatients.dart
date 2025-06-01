@@ -1,123 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:diaguard1/core/service/auth.dart';
+import 'package:diaguard1/core/service/doctor_service.dart';
 
-class Patient {
-  final String name;
-  final String status;
-  final String imageUrl;
+class ListOfPatients extends StatefulWidget {
+  const ListOfPatients({super.key});
 
-  Patient({required this.name, required this.status, required this.imageUrl});
+  @override
+  State<ListOfPatients> createState() => _ListOfPatientsState();
 }
 
-class DoctorPatientListScreen extends StatelessWidget {
-  final List<Patient> patients = [
-    Patient(name: 'عمر يوسف', status: 'مرتفع', imageUrl: 'assets/omr.png'),
-    Patient(
-      name: 'خليل خالد عبدالفتاح',
-      status: 'طبيعي',
-      imageUrl: 'assets/khalil.png',
-    ),
-    Patient(name: 'عمر يوسف', status: 'طبيعي', imageUrl: 'assets/omr.png'),
-    Patient(name: 'عمر يوسف', status: 'منخفض', imageUrl: 'assets/omr.png'),
-  ];
+class _ListOfPatientsState extends State<ListOfPatients> {
+  late final DoctorService _doctorService;
+  late Future<List<Map<String, dynamic>>> _patientsFuture;
 
-  Color getStatusColor(String status) {
-    switch (status) {
-      case 'مرتفع':
-        return Colors.red.shade400;
-      case 'منخفض':
-        return Colors.amber.shade700;
-      case 'طبيعي':
-        return Colors.cyan.shade600;
-      default:
-        return Colors.grey;
-    }
+  @override
+  void initState() {
+    super.initState();
+    _doctorService = DoctorService(authService: AuthService());
+    _patientsFuture = _doctorService.getPatients();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('قائمة المرضى'),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.menu))],
-        ),
-        body: Column(
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage('assets/doctor.png'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Patients List'),
+        centerTitle: true,
+        backgroundColor: Colors.teal,
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _patientsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.red),
               ),
-              title: Text(
-                'مرحباً د. محمد سمير',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'بحث',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
+            );
+          }
+
+          final patients = snapshot.data ?? [];
+
+          if (patients.isEmpty) {
+            return const Center(child: Text('No patients found.'));
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(12.0),
+            itemCount: patients.length,
+            itemBuilder: (context, index) {
+              final patient = patients[index];
+
+              // Safe extraction with null checks & fallback values
+              final id = patient['_id']?.toString() ?? 'No ID';
+              final rawName = patient['name'];
+              final name =
+                  (rawName is String && rawName.trim().isNotEmpty)
+                      ? rawName.trim()
+                      : 'Unnamed';
+
+              final lastReading = patient['lastReading'];
+              final readingValue =
+                  lastReading != null ? lastReading['value']?.toString() : null;
+              final readingType =
+                  lastReading != null ? lastReading['type']?.toString() : null;
+
+              return Card(
+                elevation: 4,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: patients.length,
-                itemBuilder: (context, index) {
-                  final patient = patients[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 6,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.teal,
+                    child: Text(
+                      name.isNotEmpty ? name[0].toUpperCase() : '?',
+                      style: const TextStyle(color: Colors.white),
                     ),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: getStatusColor(patient.status),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 6,
-                          backgroundColor: Colors.white,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                patient.name,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                patient.status,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                        CircleAvatar(
-                          backgroundImage: AssetImage(patient.imageUrl),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+                  ),
+                  title: Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text(
+                        (readingValue != null && readingType != null)
+                            ? 'Last Reading: $readingValue ($readingType)'
+                            : 'No readings yet',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                    ],
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // TODO: Navigate to patient detail screen
+                    // Navigator.push(context, MaterialPageRoute(builder: (_) => PatientDetailScreen(patientId: id)));
+                  },
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

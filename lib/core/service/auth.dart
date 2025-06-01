@@ -43,6 +43,7 @@ class AuthService {
             'email': user['email'],
             'role': user['role'],
             'fullname': user['fullname'],
+            
           },
         };
       } else {

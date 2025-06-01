@@ -54,14 +54,10 @@ class _LoginscreenDState extends State<LoginscreenD> {
           SnackBar(content: Text('successful'), backgroundColor: Colors.green),
         );
 
-        final String userName = response['user']['fullname'] ?? 'د. مجهول';
+        
 
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (context) =>
-                    DoctorPatientListScreen(), // ✅ Navigates to updated screen
-          ),
+          MaterialPageRoute(builder: (context) => ListOfPatients()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
