@@ -43,7 +43,6 @@ class AuthService {
             'email': user['email'],
             'role': user['role'],
             'fullname': user['fullname'],
-            
           },
         };
       } else {
@@ -64,6 +63,7 @@ class AuthService {
     String? emergencyName,
     String? emergencyPhone,
     String? emergencyRelationship,
+    List<Map<String, String>>? questions,
   }) async {
     try {
       if (role == 'patient') {
@@ -95,6 +95,9 @@ class AuthService {
           'phone': emergencyPhone,
           'relationship': emergencyRelationship ?? 'Family Member',
         };
+        if (questions != null) {
+          body['questions'] = questions;
+        }
       }
 
       final response = await http.post(
@@ -110,6 +113,7 @@ class AuthService {
 
       if (response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
+        print('Parsed responseBody: ' + responseBody.toString());
         final responseData = responseBody['response'];
         final token = responseData['token'];
         final user = responseData['user'];
@@ -129,6 +133,8 @@ class AuthService {
           },
         };
       } else {
+        print('Signup failed with status: ${response.statusCode}');
+        print('Response body: ${response.body}');
         throw Exception('Failed to sign up: ${response.body}');
       }
     } catch (e) {

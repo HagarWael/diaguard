@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:diaguard1/features/welcome/screens/usertype.dart';
 import 'package:diaguard1/features/patient/patientScreens/questions.dart';
-import 'package:diaguard1/features/questionnaire/bloC/questionBloC.dart';
+
 import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart';
 import 'package:diaguard1/features/patient/patientScreens/patient_list.dart';
 import 'package:diaguard1/features/patient/menu/patient_page.dart';
@@ -20,10 +20,7 @@ void main() async {
       path: 'assets/language',
       fallbackLocale: Locale('en'),
       saveLocale: true,
-      child: MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => QuestionBloc())],
-        child: const MyApp(),
-      ),
+      child: const MyApp(),
     ),
   );
 }

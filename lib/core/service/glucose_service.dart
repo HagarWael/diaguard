@@ -23,7 +23,8 @@ class GlucoseService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Failed to save reading');
+      print('Save reading error: \\n${response.body}');
+      throw Exception('Failed to save reading: ${response.body}');
     }
   }
 

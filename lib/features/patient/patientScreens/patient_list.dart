@@ -7,6 +7,9 @@ import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/core/service/glucose_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:diaguard1/features/patient/patientScreens/profile.dart';
 
 class BarHome extends StatefulWidget {
   final String userName;
@@ -74,6 +77,30 @@ class _BarHomeState extends State<BarHome> {
     final drawerItems = ListView(
       children: <Widget>[
         drawerHeader,
+        ListTile(
+          title: Row(
+            children: [
+              Icon(Icons.person, color: Colors.white),
+              const SizedBox(width: 15),
+              Text(
+                'الملف الشخصي',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
+          onTap: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => ProfileScreen(
+                      userName: widget.userName,
+                      authService: widget.authService,
+                    ),
+              ),
+            );
+          },
+        ),
         ListTile(
           title: Row(
             children: [

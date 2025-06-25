@@ -108,7 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
         if (newAccount) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => QuestionScreen(authService: _authService),
+              builder:
+                  (context) => QuestionScreen(
+                    authService: _authService,
+                    userName: fullName,
+                  ),
             ),
           );
         } else {
@@ -126,6 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
+      print("error in _handleAuth fun: $e");
+      print("error in _handleAuth fun: $e");
       print("error in _handleAuth fun: $e");
       setState(() {
         _isLoading = false;

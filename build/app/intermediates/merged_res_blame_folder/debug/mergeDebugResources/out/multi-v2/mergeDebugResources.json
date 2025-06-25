@@ -1292,6 +1292,25 @@
                     }
                 },
                 {
+                    "source": "/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "173,818",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "476,982"
+                    },
+                    "to": {
+                        "startLines": "1507,1511",
+                        "startColumns": "4,4",
+                        "startOffsets": "94995,95176",
+                        "endLines": "1510,1513",
+                        "endColumns": "12,12",
+                        "endOffsets": "95171,95340"
+                    }
+                },
+                {
                     "source": "/Users/hager/.gradle/caches/8.10.2/transforms/aed2861b2b6894f7067df3f3f96b791f/transformed/jetified-window-1.2.0/res/values/values.xml",
                     "from": {
                         "startLines": "2,3,9,17,25,37,43,49,50,51,52,53,54,55,61,66,74,89",
@@ -1452,25 +1471,6 @@
                         "startOffsets": "22883",
                         "endColumns": "82",
                         "endOffsets": "22961"
-                    }
-                },
-                {
-                    "source": "/Users/hager/Downloads/diaguard/android/app/src/main/res/values/styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "173,818",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "476,982"
-                    },
-                    "to": {
-                        "startLines": "1507,1511",
-                        "startColumns": "4,4",
-                        "startOffsets": "94995,95176",
-                        "endLines": "1510,1513",
-                        "endColumns": "12,12",
-                        "endOffsets": "95171,95340"
                     }
                 },
                 {
@@ -5119,7 +5119,7 @@
             "outputFile": "com.example.diaguard1.app-debug-44:/values-night-v8_values-night-v8.arsc.flat",
             "map": [
                 {
-                    "source": "/Users/hager/Downloads/diaguard/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

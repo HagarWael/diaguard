@@ -6,6 +6,7 @@ import 'package:date_format/date_format.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
 import 'package:diaguard1/core/service/glucose_service.dart';
 import 'package:diaguard1/core/service/auth.dart';
+import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 
 late double before;
 late double after;
@@ -20,11 +21,13 @@ late String englishDay;
 class PatientInformation extends StatefulWidget {
   final String userName;
   final AuthService authService;
+  final Map<int, String>? answers;
 
   const PatientInformation({
     Key? key,
     required this.userName,
     required this.authService,
+    this.answers,
   }) : super(key: key);
 
   @override
@@ -129,6 +132,29 @@ class _PatientInformationState extends State<PatientInformation> {
                     ),
                   ),
                 ),
+
+                if (widget.answers != null && widget.answers!.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                    child: Text(
+                      'إجابات الأسئلة:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  ...widget.answers!.entries.map(
+                    (entry) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: Text(
+                        '${entry.key + 1}. ${questions[entry.key]}: ${entry.value}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                ],
 
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),

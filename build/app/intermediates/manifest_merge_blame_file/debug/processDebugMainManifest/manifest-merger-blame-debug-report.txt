@@ -13,8 +13,8 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->/Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManifest.xml:6:5-66
-15-->/Users/hager/Downloads/diaguard/android/app/src/debug/AndroidManifest.xml:6:22-64
+15-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/debug/AndroidManifest.xml:6:5-66
+15-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/debug/AndroidManifest.xml:6:22-64
 16    <!--
 17     Required to query activities that can process text, see:
 18         https://developer.android.com/training/package-visibility and
@@ -23,26 +23,26 @@
 21         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 22    -->
 23    <queries>
-23-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:39:5-44:15
+23-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:39:5-44:15
 24        <intent>
-24-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:40:9-43:18
+24-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:40:9-43:18
 25            <action android:name="android.intent.action.PROCESS_TEXT" />
-25-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:41:13-72
-25-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:41:21-70
+25-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:41:13-72
+25-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:41:21-70
 26
 27            <data android:mimeType="text/plain" />
-27-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:42:13-50
-27-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:42:19-48
+27-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:42:13-50
+27-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:42:19-48
 28        </intent>
 29        <intent>
-29-->[:file_picker] /Users/hager/Downloads/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:18
+29-->[:file_picker] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:18
 30            <action android:name="android.intent.action.GET_CONTENT" />
-30-->[:file_picker] /Users/hager/Downloads/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-72
-30-->[:file_picker] /Users/hager/Downloads/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:21-69
+30-->[:file_picker] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-72
+30-->[:file_picker] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/file_picker/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:21-69
 31
 32            <data android:mimeType="*/*" />
-32-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:42:13-50
-32-->/Users/hager/Downloads/diaguard/android/app/src/main/AndroidManifest.xml:42:19-48
+32-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:42:13-50
+32-->/Users/hager/Desktop/Graduation-Project(DG)/diaguard/android/app/src/main/AndroidManifest.xml:42:19-48
 33        </intent>
 34    </queries>
 35
@@ -100,23 +100,23 @@
 81            android:value="2" />
 82
 83        <provider
-83-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-19:20
+83-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-19:20
 84            android:name="com.crazecoder.openfile.FileProvider"
-84-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-64
+84-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-64
 85            android:authorities="com.example.diaguard1.fileProvider.com.crazecoder.openfile"
-85-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-88
+85-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-88
 86            android:exported="false"
-86-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-37
+86-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-37
 87            android:grantUriPermissions="true"
-87-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-47
+87-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-47
 88            android:requestLegacyExternalStorage="true" >
-88-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-56
+88-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-56
 89            <meta-data
-89-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:13-18:53
+89-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:13-18:53
 90                android:name="android.support.FILE_PROVIDER_PATHS"
-90-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:17:17-67
+90-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:17:17-67
 91                android:resource="@xml/filepaths" />
-91-->[:open_file_android] /Users/hager/Downloads/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:17-50
+91-->[:open_file_android] /Users/hager/Desktop/Graduation-Project(DG)/diaguard/build/open_file_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:17-50
 92        </provider>
 93
 94        <uses-library
