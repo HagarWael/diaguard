@@ -3,6 +3,8 @@ import 'package:diaguard1/core/service/doctor_service.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:convert';
+import 'package:diaguard1/features/doctor/drScreens/chat_screen.dart';
+import 'package:diaguard1/features/doctor/drScreens/patient_pdfs_screen.dart';
 
 class PatientDetailScreen extends StatefulWidget {
   final String patientId;
@@ -91,6 +93,22 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.chat),
+        label: Text('محادثة المريض'),
+        backgroundColor: Colors.teal,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => DoctorChatScreen(
+                patientId: widget.patientId,
+                patientName: widget.patientName,
+              ),
+            ),
+          );
+        },
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
@@ -139,6 +157,24 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
                               _buildInfoRow('Diabetes Type', _patientDetails?['diabetesType'] ?? 'N/A'),
                             ],
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.picture_as_pdf),
+                          label: Text('عرض ملفات التحاليل الطبية'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PatientPdfsScreen(
+                                  patientId: widget.patientId,
+                                  patientName: widget.patientName,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 24),

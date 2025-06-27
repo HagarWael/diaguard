@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/core/service/doctor_service.dart';
 import 'package:diaguard1/features/doctor/drScreens/patient_detail_screen.dart';
+import 'package:diaguard1/features/doctor/drScreens/chat_screen.dart';
 
 class ListOfPatients extends StatefulWidget {
   const ListOfPatients({super.key});
@@ -28,6 +29,24 @@ class _ListOfPatientsState extends State<ListOfPatients> {
         title: const Text('Patients List'),
         centerTitle: true,
         backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.chat),
+            tooltip: 'محادثة عامة',
+            onPressed: () {
+              // For now, open a placeholder chat screen (could be a chat list in the future)
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DoctorChatScreen(
+                    patientId: '',
+                    patientName: 'محادثة عامة',
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _patientsFuture,

@@ -237,4 +237,47 @@ class AuthService {
       await storage.delete(key: 'jwt_token');
     }
   }
+
+  Future<String?> getDoctorId() async {
+  try {
+    final token = await getToken();
+    if (token == null) return null;
+    
+    final decoded = JwtDecoder.decode(token);
+    final role = decoded['role']?.toString();
+    
+    // If the user is a doctor, return their own ID from the token
+    if (role == 'doctor') {
+      return decoded['userId']?.toString();
+    }
+    
+    // If the user is a patient, fetch their doctor ID from the backend
+    if (role == 'patient') {
+      try {
+        final response = await http.get(
+          Uri.parse('$baseUrl/users/doctor-id'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          final responseBody = jsonDecode(response.body);
+          if (responseBody['success'] == true) {
+            return responseBody['data']['doctorId']?.toString();
+          }
+        }
+      } catch (e) {
+        print("Error fetching doctor ID: $e");
+        return null;
+      }
+    }
+    
+    return null;
+  } catch (e) {
+    print("Error in getDoctorId: $e");
+    return null;
+  }
+}
 }

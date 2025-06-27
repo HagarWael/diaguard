@@ -26,7 +26,10 @@
         "open_file",
         "provider",
         "shared_preferences",
-        "syncfusion_flutter_charts"
+        "socket_io_client",
+        "syncfusion_flutter_charts",
+        "universal_html",
+        "url_launcher"
       ],
       "devDependencies": [
         "flutter_lints",
@@ -66,6 +69,44 @@
         "test_api",
         "vector_math",
         "vm_service"
+      ]
+    },
+    {
+      "name": "universal_html",
+      "version": "2.2.4",
+      "dependencies": [
+        "async",
+        "charcode",
+        "collection",
+        "csslib",
+        "html",
+        "meta",
+        "source_span",
+        "typed_data",
+        "universal_io"
+      ]
+    },
+    {
+      "name": "url_launcher",
+      "version": "6.3.1",
+      "dependencies": [
+        "flutter",
+        "url_launcher_android",
+        "url_launcher_ios",
+        "url_launcher_linux",
+        "url_launcher_macos",
+        "url_launcher_platform_interface",
+        "url_launcher_web",
+        "url_launcher_windows"
+      ]
+    },
+    {
+      "name": "socket_io_client",
+      "version": "3.1.2",
+      "dependencies": [
+        "logging",
+        "socket_io_common",
+        "web"
       ]
     },
     {
@@ -430,6 +471,97 @@
       ]
     },
     {
+      "name": "universal_io",
+      "version": "2.2.2",
+      "dependencies": [
+        "collection",
+        "meta",
+        "typed_data"
+      ]
+    },
+    {
+      "name": "typed_data",
+      "version": "1.4.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "url_launcher_windows",
+      "version": "3.1.4",
+      "dependencies": [
+        "flutter",
+        "url_launcher_platform_interface"
+      ]
+    },
+    {
+      "name": "url_launcher_web",
+      "version": "2.4.1",
+      "dependencies": [
+        "flutter",
+        "flutter_web_plugins",
+        "url_launcher_platform_interface",
+        "web"
+      ]
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "version": "2.3.2",
+      "dependencies": [
+        "flutter",
+        "plugin_platform_interface"
+      ]
+    },
+    {
+      "name": "url_launcher_macos",
+      "version": "3.2.2",
+      "dependencies": [
+        "flutter",
+        "url_launcher_platform_interface"
+      ]
+    },
+    {
+      "name": "url_launcher_linux",
+      "version": "3.2.1",
+      "dependencies": [
+        "flutter",
+        "url_launcher_platform_interface"
+      ]
+    },
+    {
+      "name": "url_launcher_ios",
+      "version": "6.3.3",
+      "dependencies": [
+        "flutter",
+        "url_launcher_platform_interface"
+      ]
+    },
+    {
+      "name": "url_launcher_android",
+      "version": "6.3.16",
+      "dependencies": [
+        "flutter",
+        "url_launcher_platform_interface"
+      ]
+    },
+    {
+      "name": "web",
+      "version": "1.1.0",
+      "dependencies": []
+    },
+    {
+      "name": "socket_io_common",
+      "version": "3.1.1",
+      "dependencies": [
+        "logging"
+      ]
+    },
+    {
+      "name": "logging",
+      "version": "1.3.0",
+      "dependencies": []
+    },
+    {
       "name": "flutter_secure_storage_windows",
       "version": "3.1.2",
       "dependencies": [
@@ -474,11 +606,6 @@
         "flutter",
         "flutter_secure_storage_platform_interface"
       ]
-    },
-    {
-      "name": "web",
-      "version": "1.1.0",
-      "dependencies": []
     },
     {
       "name": "http_parser",
@@ -732,13 +859,6 @@
       "version": "0.6.7",
       "dependencies": [
         "meta"
-      ]
-    },
-    {
-      "name": "typed_data",
-      "version": "1.4.0",
-      "dependencies": [
-        "collection"
       ]
     },
     {
@@ -1012,6 +1132,26 @@
       "version": "80.0.0",
       "dependencies": [
         "meta"
+      ]
+    },
+    {
+      "name": "csslib",
+      "version": "1.0.2",
+      "dependencies": [
+        "source_span"
+      ]
+    },
+    {
+      "name": "charcode",
+      "version": "1.4.0",
+      "dependencies": []
+    },
+    {
+      "name": "html",
+      "version": "0.15.6",
+      "dependencies": [
+        "csslib",
+        "source_span"
       ]
     }
   ],

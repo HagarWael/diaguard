@@ -7,6 +7,8 @@ import 'package:diaguard1/core/theme/app_color.dart';
 import 'package:diaguard1/core/service/glucose_service.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/features/questionnaire/data/question_data.dart';
+import 'package:diaguard1/features/patient/patientScreens/chat_screen.dart';
+import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
 
 late double before;
 late double after;
@@ -787,10 +789,53 @@ class _PatientInformationState extends State<PatientInformation> {
                   scrollDirection: Axis.horizontal,
                   child: Row(children: callingListAfter(afterReadings)),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Center(
+                    child: ElevatedButton.icon(
+                      icon: Icon(Icons.picture_as_pdf),
+                      label: Text('رفع وتحميل تقارير التحاليل الطبية'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PdfUploadScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
+      ),
+      floatingActionButton: FutureBuilder<String?>(
+        future: widget.authService.getDoctorId(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData || snapshot.data == null) {
+            return SizedBox.shrink();
+          }
+          final doctorId = snapshot.data!;
+          return FloatingActionButton.extended(
+            icon: Icon(Icons.chat),
+            label: Text('محادثة الطبيب'),
+            backgroundColor: Colors.teal,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ChatScreen(
+                    doctorId: doctorId,
+                    doctorName: 'الطبيب', // Optionally fetch/display real name
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
