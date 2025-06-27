@@ -1,9 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'auth.dart';
+import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 
 class QuestionService {
-  final String baseUrl = 'http://10.0.2.2:3000';
+  final String baseUrl = 'http://localhost:3000';
   final AuthService authService;
 
   QuestionService({required this.authService});
@@ -14,10 +15,16 @@ class QuestionService {
   }
 
   Future<Map<String, dynamic>> saveAnswers(Map<int, String> answers) async {
+    // Convert answers to a List<Map<String, String>> with questionText and answer
+    final answerList = answers.entries.map((entry) => {
+      'questionText': questions[entry.key],
+      'answer': entry.value,
+    }).toList();
+
     final response = await http.post(
       Uri.parse('$baseUrl/questions/save-answers'),
       headers: await _getHeaders(),
-      body: jsonEncode({'answers': answers}),
+      body: jsonEncode({'answers': answerList}),
     );
 
     if (response.statusCode == 200) {
@@ -28,7 +35,7 @@ class QuestionService {
     }
   }
 
-  Future<Map<int, String>> getAnswers() async {
+  Future<List<Map<String, String>>> getAnswers() async {
     final response = await http.get(
       Uri.parse('$baseUrl/questions/get-answers'),
       headers: await _getHeaders(),
@@ -36,12 +43,14 @@ class QuestionService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      // Convert the JSON response to a Map<int, String>
-      final Map<int, String> answers = {};
-      if (data['answers'] != null) {
-        data['answers'].forEach((key, value) {
-          answers[int.parse(key)] = value;
-        });
+      final List<Map<String, String>> answers = [];
+      if (data['question'] != null) {
+        for (var q in data['question']) {
+          answers.add({
+            'questionText': q['questionText'],
+            'answer': q['answer'],
+          });
+        }
       }
       return answers;
     } else {

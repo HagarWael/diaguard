@@ -6,11 +6,13 @@ import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 class ProfileScreen extends StatefulWidget {
   final String userName;
   final AuthService authService;
+  final Map<int, String>? answers;
 
   const ProfileScreen({
     Key? key,
     required this.userName,
     required this.authService,
+    this.answers,
   }) : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late QuestionService questionService;
-  Map<int, String> answers = {};
+  List<Map<String, String>> answers = [];
   bool isLoading = true;
 
   @override
@@ -32,8 +34,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadAnswers() async {
     setState(() => isLoading = true);
     try {
-      final loadedAnswers = await questionService.getAnswers();
-      setState(() => answers = loadedAnswers);
+      // If we have answers passed from questions screen, use them
+      if (widget.answers != null && widget.answers!.isNotEmpty) {
+        answers = widget.answers!.entries.map((entry) {
+          return {
+            'questionText': questions[entry.key],
+            'answer': entry.value,
+          };
+        }).toList();
+      } else {
+        // Otherwise try to load from service
+        final loadedAnswers = await questionService.getAnswers();
+        setState(() => answers = loadedAnswers);
+      }
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -47,35 +60,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('الملف الشخصي', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color.fromRGBO(52, 91, 99, 1),
+        iconTheme: IconThemeData(color: Colors.white),
         actions: [
-          IconButton(icon: Icon(Icons.refresh), onPressed: _loadAnswers),
+          IconButton(
+            icon: Icon(Icons.refresh, color: Colors.white), 
+            onPressed: _loadAnswers
+          ),
         ],
       ),
-      body:
-          isLoading
-              ? Center(child: CircularProgressIndicator())
-              : answers.isEmpty
-              ? Center(child: Text('No answers available'))
-              : ListView.builder(
-                padding: EdgeInsets.all(16),
-                itemCount: answers.length,
-                itemBuilder: (context, index) {
-                  final answer = answers[index];
-                  if (answer == null) return SizedBox();
-
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 16),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        answer,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : answers.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.quiz_outlined, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'لا توجد إجابات متاحة',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.all(16),
+                  itemCount: answers.length,
+                  itemBuilder: (context, index) {
+                    final answer = answers[index];
+                    return Card(
+                      margin: EdgeInsets.only(bottom: 16),
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(52, 91, 99, 0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.quiz,
+                                    color: Color.fromRGBO(52, 91, 99, 1),
+                                    size: 20,
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    'السؤال ${index + 1}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Color.fromRGBO(52, 91, 99, 1),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                            Text(
+                              answer['questionText'] ?? '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold, 
+                                fontSize: 16,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(52, 91, 99, 0.05),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color.fromRGBO(52, 91, 99, 0.2),
+                                ),
+                              ),
+                              child: Text(
+                                answer['answer'] ?? '',
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  color: Color.fromRGBO(52, 91, 99, 1),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

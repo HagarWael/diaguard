@@ -10,13 +10,19 @@ import 'package:diaguard1/core/service/glucose_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:diaguard1/features/patient/patientScreens/profile.dart';
+import 'package:diaguard1/features/welcome/screens/usertype.dart';
 
 class BarHome extends StatefulWidget {
   final String userName;
   final AuthService authService;
+  final Map<int, String>? answers;
 
-  const BarHome({Key? key, required this.userName, required this.authService})
-    : super(key: key);
+  const BarHome({
+    Key? key, 
+    required this.userName, 
+    required this.authService,
+    this.answers,
+  }) : super(key: key);
 
   @override
   _BarHomeState createState() => _BarHomeState();
@@ -96,6 +102,7 @@ class _BarHomeState extends State<BarHome> {
                     (context) => ProfileScreen(
                       userName: widget.userName,
                       authService: widget.authService,
+                      answers: widget.answers,
                     ),
               ),
             );
@@ -169,8 +176,10 @@ class _BarHomeState extends State<BarHome> {
           onTap: () async {
             try {
               await widget.authService.logout();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/login',
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const AppUser(),
+                ),
                 (Route<dynamic> route) => false,
               );
             } catch (e) {

@@ -42,7 +42,7 @@ class _LoginscreenDState extends State<LoginscreenD> {
           role: widget.role,
         );
       } else {
-        response = await _authService.login(email: email, password: password);
+        response = await _authService.login(email: email, password: password, role: widget.role);
       }
 
       setState(() {
@@ -54,14 +54,15 @@ class _LoginscreenDState extends State<LoginscreenD> {
           SnackBar(content: Text('successful'), backgroundColor: Colors.green),
         );
 
-        
-
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => ListOfPatients()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('failed'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('Incorrect email or password'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
@@ -72,7 +73,7 @@ class _LoginscreenDState extends State<LoginscreenD> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("An error occurred: ${e.toString()}"),
+          content: Text("An unexpected error occurred. Please try again."),
           backgroundColor: Colors.red,
         ),
       );

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'auth.dart';
 
 class GlucoseService {
-  final String baseUrl = 'http://10.0.2.2:3000';
+  final String baseUrl = 'http://localhost:3000';
   final AuthService authService;
 
   GlucoseService({required this.authService});

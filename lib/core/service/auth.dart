@@ -4,12 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService {
-  final String baseUrl = 'http://10.0.2.2:3000';
+  final String baseUrl = 'http://localhost:3000';
   final storage = FlutterSecureStorage();
 
   Future<Map<String, dynamic>> login({
     required String email,
     required String password,
+    required String role
   }) async {
     try {
       final response = await http.post(
@@ -20,6 +21,7 @@ class AuthService {
         body: jsonEncode(<String, String>{
           'email': email,
           'password': password,
+          'role': role
         }),
       );
 
@@ -45,12 +47,35 @@ class AuthService {
             'fullname': user['fullname'],
           },
         };
+      } else if (response.statusCode == 500) {
+        // Handle 500 error specifically for wrong credentials
+        return {
+          'status': 'failed',
+          'message': 'Wrong credentials. Please check your email and password.',
+        };
       } else {
-        throw Exception('Failed to login: ${response.body}');
+        // For other error status codes, try to parse the error message from response
+        try {
+          final responseBody = jsonDecode(response.body);
+          final errorMessage = responseBody['message'] ?? 'Failed to login';
+          return {
+            'status': 'failed',
+            'message': errorMessage,
+          };
+        } catch (parseError) {
+          return {
+            'status': 'failed',
+            'message': 'Failed to login. Please try again.',
+          };
+        }
       }
     } catch (e) {
       print("Error in login: $e");
-      throw Exception('An error occurred during login: $e');
+      // For network errors or other exceptions, return a generic message
+      return {
+        'status': 'failed',
+        'message': 'Network error. Please check your connection and try again.',
+      };
     }
   }
 
@@ -68,16 +93,20 @@ class AuthService {
     try {
       if (role == 'patient') {
         if (doctorCode == null || doctorCode.isEmpty) {
-          throw Exception('Doctor code is required for patient registration');
+          return {
+            'status': 'failed',
+            'message': 'Doctor code is required for patient registration',
+          };
         }
 
         if (emergencyName == null ||
             emergencyName.isEmpty ||
             emergencyPhone == null ||
             emergencyPhone.isEmpty) {
-          throw Exception(
-            'Emergency contact name and phone are required for patient registration',
-          );
+          return {
+            'status': 'failed',
+            'message': 'Emergency contact name and phone are required for patient registration',
+          };
         }
       }
 
@@ -119,7 +148,10 @@ class AuthService {
         final user = responseData['user'];
 
         if (token == null || user == null) {
-          throw Exception('Token or user is null in the response');
+          return {
+            'status': 'failed',
+            'message': 'Invalid response from server. Please try again.',
+          };
         }
 
         await storeToken(token);
@@ -132,14 +164,35 @@ class AuthService {
             'fullname': user['fullname'],
           },
         };
+      } else if (response.statusCode == 500) {
+        // Handle 500 error specifically
+        return {
+          'status': 'failed',
+          'message': 'Registration failed. Please try again.',
+        };
       } else {
-        print('Signup failed with status: ${response.statusCode}');
-        print('Response body: ${response.body}');
-        throw Exception('Failed to sign up: ${response.body}');
+        // For other error status codes, try to parse the error message from response
+        try {
+          final responseBody = jsonDecode(response.body);
+          final errorMessage = responseBody['message'] ?? 'Failed to sign up';
+          return {
+            'status': 'failed',
+            'message': errorMessage,
+          };
+        } catch (parseError) {
+          return {
+            'status': 'failed',
+            'message': 'Failed to sign up. Please try again.',
+          };
+        }
       }
     } catch (e) {
       print("Error in signup: $e");
-      throw Exception('An error occurred during signup: $e');
+      // For network errors or other exceptions, return a generic message
+      return {
+        'status': 'failed',
+        'message': 'Network error. Please check your connection and try again.',
+      };
     }
   }
 
@@ -156,6 +209,32 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await storage.delete(key: 'jwt_token');
+    try {
+      // Get the current token
+      final token = await getToken();
+      
+      if (token != null) {
+        // Make logout request to backend with token
+        final response = await http.post(
+          Uri.parse('$baseUrl/auth/logout'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+        );
+
+        print("Logout response status code: ${response.statusCode}");
+        print("Logout response body: ${response.body}");
+
+        // Even if the backend request fails, we still want to clear the local token
+        // This ensures the user is logged out locally regardless of backend response
+      }
+    } catch (e) {
+      print("Error during logout request: $e");
+      // Continue with local logout even if backend request fails
+    } finally {
+      // Always delete the token from local storage
+      await storage.delete(key: 'jwt_token');
+    }
   }
 }

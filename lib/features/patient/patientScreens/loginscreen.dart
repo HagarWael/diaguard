@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               widget.role == 'patient' ? emergencyRelationship : null,
         );
       } else {
-        response = await _authService.login(email: email, password: password);
+        response = await _authService.login(email: email, password: password, role: widget.role);
       }
 
       setState(() {
@@ -126,12 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(response['message'] ?? 'Failed'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
-      print("error in _handleAuth fun: $e");
-      print("error in _handleAuth fun: $e");
       print("error in _handleAuth fun: $e");
       setState(() {
         _isLoading = false;
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("An error occurred: ${e.toString()}"),
+          content: Text("An unexpected error occurred. Please try again."),
           backgroundColor: Colors.red,
         ),
       );

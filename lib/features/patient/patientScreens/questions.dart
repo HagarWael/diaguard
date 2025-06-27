@@ -3,7 +3,7 @@ import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/core/service/question_service.dart';
 import 'package:diaguard1/core/theme/app_color.dart';
-import 'infopage_patient.dart';
+import 'patient_list.dart';
 
 class QuestionScreen extends StatefulWidget {
   final AuthService authService;
@@ -71,7 +71,7 @@ class _QuestionScreenState extends State<QuestionScreen>
       context,
       MaterialPageRoute(
         builder:
-            (context) => PatientInformation(
+            (context) => BarHome(
               userName: widget.userName,
               authService: widget.authService,
               answers: answers,

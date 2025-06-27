@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/core/service/doctor_service.dart';
+import 'package:diaguard1/features/doctor/drScreens/patient_detail_screen.dart';
 
 class ListOfPatients extends StatefulWidget {
   const ListOfPatients({super.key});
@@ -106,8 +107,15 @@ class _ListOfPatientsState extends State<ListOfPatients> {
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // TODO: Navigate to patient detail screen
-                    // Navigator.push(context, MaterialPageRoute(builder: (_) => PatientDetailScreen(patientId: id)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PatientDetailScreen(
+                          patientId: id,
+                          patientName: name,
+                        ),
+                      ),
+                    );
                   },
                 ),
               );
