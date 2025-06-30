@@ -14,14 +14,13 @@ import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart'
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 
 import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
-import 'package:diaguard1/features/patient/menu/twasel.dart';
+
 import 'package:diaguard1/features/welcome/screens/usertype.dart';
-import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:diaguard1/features/patient/patientScreens/calorie_calc.dart';
 import 'package:diaguard1/features/patient/patientScreens/insuline_calc.dart';
 import 'package:diaguard1/features/patient/patientScreens/chatbot.dart';
 import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
-import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
+import 'package:diaguard1/features/patient/patientScreens/contact_us.dart';
 
 
 class BarHome extends StatefulWidget {
@@ -198,10 +197,24 @@ class _BarHomeState extends State<BarHome> {
             ],
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => twasel()),
-            );
+            print('Contact Us tapped - attempting navigation');
+            try {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ContactUsScreen(),
+                ),
+              );
+              print('Navigation successful');
+            } catch (e) {
+              print('Navigation error: $e');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Navigation error: $e'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           },
         ),
 
@@ -268,10 +281,15 @@ class _BarHomeState extends State<BarHome> {
         // 6) Logout
         ListTile(
           title: Row(
-            children: const [
+            children:  [
               SizedBox(width: 10),
-              Text('تسجيل الخروج',
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
+             Text(
+                context.locale.languageCode == 'ar'
+                      
+                    ? 'تسجيل خروج'
+                    : 'Logout',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ],
           ),
           onTap: () async {
