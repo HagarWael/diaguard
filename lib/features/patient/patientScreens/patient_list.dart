@@ -17,6 +17,9 @@ import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
 import 'package:diaguard1/features/patient/menu/twasel.dart';
 import 'package:diaguard1/features/welcome/screens/usertype.dart';
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
+import 'package:diaguard1/features/patient/patientScreens/calorie_calc.dart';
+import 'package:diaguard1/features/patient/patientScreens/insuline_calc.dart';
+import 'package:diaguard1/features/patient/patientScreens/chatbot.dart';
 
 
 class BarHome extends StatefulWidget {
@@ -209,7 +212,52 @@ class _BarHomeState extends State<BarHome> {
                 : 'Nutritional Chatbot',
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onTap: () => Navigator.pushNamed(context, '/chatbot_patient'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChatbotPatientPage(),
+              ),
+            );
+          },
+        ),
+
+        // Calorie Calculator
+        ListTile(
+          leading: const Icon(Icons.local_fire_department, color: Colors.white),
+          title: Text(
+            context.locale.languageCode == 'ar'
+                ? 'حاسبة السعرات'
+                : 'Calorie Calculator',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CalorieCalculatorScreen(),
+              ),
+            );
+          },
+        ),
+
+        // Insulin Calculator
+        ListTile(
+          leading: const Icon(Icons.calculate, color: Colors.white),
+          title: Text(
+            context.locale.languageCode == 'ar'
+                ? 'حاسبة الإنسولين'
+                : 'Insulin Calculator',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => InsulinCalculatorScreen(),
+              ),
+            );
+          },
         ),
 
         const Divider(
