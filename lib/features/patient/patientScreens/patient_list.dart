@@ -20,6 +20,8 @@ import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 import 'package:diaguard1/features/patient/patientScreens/calorie_calc.dart';
 import 'package:diaguard1/features/patient/patientScreens/insuline_calc.dart';
 import 'package:diaguard1/features/patient/patientScreens/chatbot.dart';
+import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
+import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
 
 
 class BarHome extends StatefulWidget {
@@ -275,13 +277,49 @@ class _BarHomeState extends State<BarHome> {
           onTap: () async {
             await widget.authService.logout();
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const AppUser()),
+              MaterialPageRoute(builder: (_) => AppUser()),
               (_) => false,
             );
           },
         ),
-      ],
-    );
+           ListTile(
+      leading: Icon(Icons.picture_as_pdf, color: Colors.white),
+      title: Text(
+        context.locale.languageCode == 'ar'
+            ? 'رفع تقارير التحاليل'
+            : 'Upload Medical Reports',
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PdfUploadScreen(),
+          ),
+        );
+      },
+    ),
+    
+    // ... rest of the drawer items ...
+  ],
+);
+   
+    /*// Main patient list with PDF upload as a list item
+    final mainListItems = [
+      // ... other list items if needed ...
+      ListTile(
+        leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
+        title: Text('رفع و تحميل تقارير التحاليل الطبية'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PdfUploadScreen(),
+            ),
+          );
+        },
+      ),
+    ];*/
 
     return Scaffold(
       key: _scaffoldKey,
@@ -316,11 +354,34 @@ class _BarHomeState extends State<BarHome> {
         ),
       ),
 
-      body: PageView(
-        controller: _pageController,
-        children: _screens,
-        onPageChanged: _onPageChanged,
-        physics: const NeverScrollableScrollPhysics(),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: _screens,
+              onPageChanged: _onPageChanged,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+          ),
+        /*  Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.picture_as_pdf),
+                label: Text('رفع وتحميل تقارير التحاليل الطبية'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfUploadScreen(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),*/
+        ],
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
