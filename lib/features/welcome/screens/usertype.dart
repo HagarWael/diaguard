@@ -59,8 +59,8 @@ class _AppUserState extends State<AppUser> {
                             MaterialPageRoute(
                               builder:
                                   (context) => const LoginscreenD(
-                                    role: 'doctor',
-                                  ), // Pass role
+                                role: 'doctor',
+                              ), // Pass role
                             ),
                           );
                         },
@@ -74,8 +74,8 @@ class _AppUserState extends State<AppUser> {
                             MaterialPageRoute(
                               builder:
                                   (context) => const LoginScreen(
-                                    role: 'patient',
-                                  ), // Pass role
+                                role: 'patient',
+                              ), // Pass role
                             ),
                           );
                         },

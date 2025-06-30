@@ -8,7 +8,6 @@ import 'package:diaguard1/core/service/glucose_service.dart';
 import 'package:diaguard1/core/service/auth.dart';
 import 'package:diaguard1/features/questionnaire/data/question_data.dart';
 import 'package:diaguard1/features/patient/patientScreens/chat_screen.dart';
-import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
 
 late double before;
 late double after;
@@ -95,498 +94,499 @@ class _PatientInformationState extends State<PatientInformation> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        height: screenHeight,
-        width: screenWidth,
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 25.0),
-                  child: Center(
-                    child: Row(
-                      children: [
-                        ImageIcon(
-                          AssetImage('assets/images/call.png'),
-                          size: 80,
-                          color: Color.fromRGBO(117, 121, 122, 1),
-                        ),
-                        Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            width: screenWidth,
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Padding(
+                padding: EdgeInsets.only(right: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Center(
+                        child: Row(
                           children: [
-                            Text(
-                              'مرحبا',
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: Color.fromRGBO(139, 139, 139, 1),
-                              ),
+                            ImageIcon(
+                              AssetImage('assets/images/call.png'),
+                              size: 80,
+                              color: Color.fromRGBO(117, 121, 122, 1),
                             ),
-                            Text(
-                              widget.userName,
-                              style: TextStyle(fontSize: 24),
+                            Column(
+                              children: [
+                                Text(
+                                  'مرحبا',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Color.fromRGBO(139, 139, 139, 1),
+                                  ),
+                                ),
+                                Text(
+                                  widget.userName,
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                if (widget.answers != null && widget.answers!.isNotEmpty) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-                    child: Text(
-                      'إجابات الأسئلة:',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  ...widget.answers!.entries.map(
-                    (entry) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: Text(
-                        '${entry.key + 1}. ${questions[entry.key]}: ${entry.value}',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                ],
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        children: [
-                          Text(
-                            'صائم',
-                            style: TextStyle(fontSize: 25 * textScale),
+                    if (widget.answers != null && widget.answers!.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                        child: Text(
+                          'إجابات الأسئلة:',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              elevation: 0,
-                              shape: CircleBorder(),
-                            ),
-                            child: Container(
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/images/afterButton.png',
+                        ),
+                      ),
+                      ...widget.answers!.entries.map(
+                        (entry) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.0),
+                          child: Text(
+                            '${entry.key + 1}. ${questions[entry.key]}: ${entry.value}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                    ],
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Text(
+                                'صائم',
+                                style: TextStyle(fontSize: 25 * textScale),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 0,
+                                  shape: CircleBorder(),
                                 ),
-                              ),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 8),
+                                child: Container(
+                                  child: Image(
+                                    image: AssetImage(
+                                      'assets/images/afterButton.png',
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                showMaterialModalBottomSheet(
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  expand: true,
-                                  builder:
-                                      (context) => BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                          sigmaX: 15,
-                                          sigmaY: 15,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              height: screenHeight * 0.7,
-                                              width:
-                                                  MediaQuery.of(
-                                                    context,
-                                                  ).size.width,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(30),
-                                                  topRight: Radius.circular(30),
-                                                ),
-                                              ),
-                                              child: ListView(
-                                                children: <Widget>[
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                        left: 30.0,
-                                                      ),
-                                                      child: IconButton(
-                                                        onPressed:
-                                                            () =>
-                                                                Navigator.of(
-                                                                  context,
-                                                                ).pop(),
-                                                        icon: Icon(
-                                                          Icons.close,
-                                                          size: 16,
-                                                        ),
-                                                      ),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.4),
+                                        spreadRadius: 2,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 8),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    showMaterialModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      expand: true,
+                                      builder:
+                                          (context) => BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                              sigmaX: 15,
+                                              sigmaY: 15,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  height: screenHeight * 0.7,
+                                                  width:
+                                                      MediaQuery.of(
+                                                        context,
+                                                      ).size.width,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(30),
+                                                      topRight: Radius.circular(30),
                                                     ),
                                                   ),
-                                                  ListTile(
-                                                    title: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                              bottom: 15.0,
+                                                  child: ListView(
+                                                    children: <Widget>[
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(
+                                                            left: 30.0,
+                                                          ),
+                                                          child: IconButton(
+                                                            onPressed:
+                                                                () =>
+                                                                    Navigator.of(
+                                                                      context,
+                                                                    ).pop(),
+                                                            icon: Icon(
+                                                              Icons.close,
+                                                              size: 16,
                                                             ),
-                                                        child: Text(
-                                                          'ادخال القراءة و انت صائم',
-                                                          style: TextStyle(
-                                                            fontSize: 24,
-                                                            color:
-                                                                AppColors
-                                                                    .background,
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment: Alignment.center,
-                                                    child: SizedBox(
-                                                      width: 204,
-                                                      child: TextField(
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        controller: _reading,
-                                                        decoration: InputDecoration(
-                                                          contentPadding:
-                                                              EdgeInsets.symmetric(
-                                                                vertical: 22.0,
-                                                              ),
-                                                          border: OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                              color:
-                                                                  Color.fromRGBO(
-                                                                    219,
-                                                                    228,
-                                                                    230,
-                                                                    1,
-                                                                  ),
-                                                              width: 1.5,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  18.0,
+                                                      ListTile(
+                                                        title: Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                  bottom: 15.0,
                                                                 ),
+                                                            child: Text(
+                                                              'ادخال القراءة و انت صائم',
+                                                              style: TextStyle(
+                                                                fontSize: 24,
+                                                                color:
+                                                                    AppColors
+                                                                        .background,
+                                                              ),
+                                                            ),
                                                           ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
+                                                        ),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: SizedBox(
+                                                          width: 204,
+                                                          child: TextField(
+                                                            textAlign:
+                                                                TextAlign.center,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            controller: _reading,
+                                                            decoration: InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.symmetric(
+                                                                    vertical: 22.0,
+                                                                  ),
+                                                              border: OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                  color:
+                                                                      Color.fromRGBO(
+                                                                        219,
+                                                                        228,
+                                                                        230,
+                                                                        1,
+                                                                      ),
+                                                                  width: 1.5,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      18.0,
+                                                                    ),
+                                                              ),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                          color:
+                                                                              Color.fromRGBO(
+                                                                                219,
+                                                                                228,
+                                                                                230,
+                                                                                1,
+                                                                              ),
+                                                                          width:
+                                                                              3.0,
+                                                                        ),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                          18.0,
+                                                                        ),
+                                                                  ),
+                                                              focusedBorder: OutlineInputBorder(
                                                                 borderSide:
-                                                                    BorderSide(
+                                                                    const BorderSide(
                                                                       color:
                                                                           Color.fromRGBO(
-                                                                            219,
-                                                                            228,
-                                                                            230,
+                                                                            133,
+                                                                            165,
+                                                                            171,
                                                                             1,
                                                                           ),
-                                                                      width:
-                                                                          3.0,
+                                                                      width: 3.0,
                                                                     ),
                                                                 borderRadius:
                                                                     BorderRadius.circular(
                                                                       18.0,
                                                                     ),
                                                               ),
-                                                          focusedBorder: OutlineInputBorder(
-                                                            borderSide:
-                                                                const BorderSide(
-                                                                  color:
-                                                                      Color.fromRGBO(
-                                                                        133,
-                                                                        165,
-                                                                        171,
-                                                                        1,
-                                                                      ),
-                                                                  width: 3.0,
-                                                                ),
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  18.0,
-                                                                ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                        top: 20.0,
-                                                      ),
-                                                      child: SizedBox(
-                                                        height: 54,
-                                                        child: ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            fixedSize: Size(
-                                                              204,
-                                                              37,
-                                                            ),
-                                                            textStyle:
-                                                                TextStyle(
-                                                                  fontSize:
-                                                                      20 *
-                                                                      textScale,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    52,
-                                                                  ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Color.fromRGBO(
-                                                                  52,
-                                                                  91,
-                                                                  99,
-                                                                  1,
-                                                                ),
+                                                      Container(
+                                                        alignment: Alignment.center,
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(
+                                                            top: 20.0,
                                                           ),
-                                                          onPressed: () async {
-                                                            setState(() {
-                                                              time();
-                                                              timeInEnglish();
-                                                              tag = 1;
-                                                              before =
-                                                                  double.parse(
-                                                                    _reading
-                                                                        .text,
-                                                                  );
-                                                              if (before <= 0) {
-                                                                showDialog<
-                                                                  String
-                                                                >(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (
-                                                                        BuildContext
-                                                                        context,
-                                                                      ) => AlertDialog(
-                                                                        title: const Text(
-                                                                          'ERROR',
-                                                                        ),
-                                                                        content:
-                                                                            const Text(
-                                                                              'الرقم الذي ادخلته خاطئ  , الرجاء اعادة ادخال الرقم ',
+                                                          child: SizedBox(
+                                                            height: 54,
+                                                            child: ElevatedButton(
+                                                              style: ElevatedButton.styleFrom(
+                                                                fixedSize: Size(
+                                                                  204,
+                                                                  37,
+                                                                ),
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                      fontSize:
+                                                                          20 *
+                                                                          textScale,
+                                                                    ),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        52,
+                                                                      ),
+                                                                ),
+                                                                backgroundColor:
+                                                                    Color.fromRGBO(
+                                                                      52,
+                                                                      91,
+                                                                      99,
+                                                                      1,
+                                                                    ),
+                                                              ),
+                                                              onPressed: () async {
+                                                                setState(() {
+                                                                  time();
+                                                                  timeInEnglish();
+                                                                  tag = 1;
+                                                                  before =
+                                                                      double.parse(
+                                                                        _reading
+                                                                            .text,
+                                                                      );
+                                                                  if (before <= 0) {
+                                                                    showDialog<
+                                                                      String
+                                                                    >(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (
+                                                                            BuildContext
+                                                                            context,
+                                                                          ) => AlertDialog(
+                                                                            title: const Text(
+                                                                              'ERROR',
                                                                             ),
-                                                                        actions: <
-                                                                          Widget
-                                                                        >[
-                                                                          TextButton(
-                                                                            onPressed:
-                                                                                () => Navigator.pop(
-                                                                                  context,
+                                                                            content:
+                                                                                const Text(
+                                                                                  'الرقم الذي ادخلته خاطئ  , الرجاء اعادة ادخال الرقم ',
+                                                                                ),
+                                                                            actions: <
+                                                                              Widget
+                                                                            >[
+                                                                              TextButton(
+                                                                                onPressed:
+                                                                                    () => Navigator.pop(
+                                                                                      context,
+                                                                                      'OK',
+                                                                                    ),
+                                                                                child: const Text(
                                                                                   'OK',
                                                                                 ),
-                                                                            child: const Text(
-                                                                              'OK',
-                                                                            ),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                        ],
-                                                                      ),
-                                                                );
-                                                              } else {
-                                                                _saveReading(
-                                                                  before,
-                                                                  'fasting',
-                                                                );
-                                                                _reading
-                                                                    .clear();
-                                                                Navigator.pop(
-                                                                  context,
-                                                                );
-                                                              }
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            'ادخال القراءة',
-                                                            textAlign:
-                                                                TextAlign
-                                                                    .center,
+                                                                    );
+                                                                  } else {
+                                                                    _saveReading(
+                                                                      before,
+                                                                      'fasting',
+                                                                    );
+                                                                    _reading
+                                                                        .clear();
+                                                                    Navigator.pop(
+                                                                      context,
+                                                                    );
+                                                                  }
+                                                                });
+                                                              },
+                                                              child: Text(
+                                                                'ادخال القراءة',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                );
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              'غير صائم',
-                              style: TextStyle(fontSize: 25 * textScale),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                elevation: 0,
-                                shape: CircleBorder(),
-                              ),
-                              child: Container(
-                                child: Image(
-                                  image: AssetImage(
-                                    'assets/images/beforeButton.png',
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.4),
-                                      spreadRadius: 2,
-                                      blurRadius: 10,
-                                      offset: Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  showMaterialModalBottomSheet(
-                                    context: context,
-                                    backgroundColor: Colors.transparent,
-                                    expand: true,
-                                    builder:
-                                        (context) => BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                            sigmaX: 15,
-                                            sigmaY: 15,
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                height: screenHeight * 0.7,
-                                                width:
-                                                    MediaQuery.of(
-                                                      context,
-                                                    ).size.width,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.only(
+                                    );
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'غير صائم',
+                                  style: TextStyle(fontSize: 25 * textScale),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: CircleBorder(),
+                                  ),
+                                  child: Container(
+                                    child: Image(
+                                      image: AssetImage(
+                                        'assets/images/beforeButton.png',
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          offset: Offset(0, 8),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      showMaterialModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        expand: true,
+                                        builder:
+                                            (context) => BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                sigmaX: 15,
+                                                sigmaY: 15,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    height: screenHeight * 0.7,
+                                                    width:
+                                                        MediaQuery.of(
+                                                          context,
+                                                        ).size.width,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.only(
                                                         topLeft:
                                                             Radius.circular(30),
                                                         topRight:
                                                             Radius.circular(30),
                                                       ),
-                                                ),
-                                                child: ListView(
-                                                  children: <Widget>[
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
+                                                    ),
+                                                    child: ListView(
+                                                      children: <Widget>[
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.topLeft,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
                                                               left: 30.0,
                                                             ),
-                                                        child: IconButton(
-                                                          onPressed:
-                                                              () =>
-                                                                  Navigator.of(
-                                                                    context,
-                                                                  ).pop(),
-                                                          icon: Icon(
-                                                            Icons.close,
-                                                            size: 16,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    ListTile(
-                                                      title: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                bottom: 15.0,
+                                                            child: IconButton(
+                                                              onPressed:
+                                                                  () =>
+                                                                      Navigator.of(
+                                                                        context,
+                                                                      ).pop(),
+                                                              icon: Icon(
+                                                                Icons.close,
+                                                                size: 16,
                                                               ),
-                                                          child: Text(
-                                                            'ادخال القراءة و انت غير صائم ',
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  30 *
-                                                                  textScale,
-                                                              color:
-                                                                  Color.fromRGBO(
-                                                                    52,
-                                                                    91,
-                                                                    99,
-                                                                    .6,
-                                                                  ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: SizedBox(
-                                                        width: 204,
-                                                        child: TextField(
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          controller: _reading,
-                                                          decoration: InputDecoration(
-                                                            contentPadding:
-                                                                EdgeInsets.symmetric(
+                                                        ListTile(
+                                                          title: Align(
+                                                            alignment:
+                                                                Alignment.center,
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets.only(
+                                                                bottom: 15.0,
+                                                              ),
+                                                              child: Text(
+                                                                'ادخال القراءة و انت غير صائم ',
+                                                                style: TextStyle(
+                                                                  fontSize:
+                                                                      30 *
+                                                                      textScale,
+                                                                  color:
+                                                                      Color.fromRGBO(
+                                                                        52,
+                                                                        91,
+                                                                        99,
+                                                                        .6,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: SizedBox(
+                                                            width: 204,
+                                                            child: TextField(
+                                                              textAlign:
+                                                                  TextAlign.center,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              controller: _reading,
+                                                              decoration: InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.symmetric(
                                                                   vertical:
                                                                       22.0,
                                                                 ),
-                                                            border: OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
+                                                                border: OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
                                                                     color:
                                                                         Color.fromRGBO(
                                                                           219,
@@ -596,14 +596,14 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                         ),
                                                                     width: 1.5,
                                                                   ),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
                                                                     18.0,
                                                                   ),
-                                                            ),
-                                                            enabledBorder: OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
+                                                                ),
+                                                                enabledBorder: OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
                                                                     color:
                                                                         Color.fromRGBO(
                                                                           187,
@@ -613,14 +613,14 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                         ),
                                                                     width: 1.5,
                                                                   ),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
                                                                     18.0,
                                                                   ),
-                                                            ),
-                                                            focusedBorder: OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
+                                                                ),
+                                                                focusedBorder: OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
                                                                     color:
                                                                         Color.fromRGBO(
                                                                           187,
@@ -630,184 +630,171 @@ class _PatientInformationState extends State<PatientInformation> {
                                                                         ),
                                                                     width: 3.0,
                                                                   ),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
                                                                     18.0,
                                                                   ),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
+                                                        Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
                                                               top: 20.0,
                                                             ),
-                                                        child: SizedBox(
-                                                          height: 54,
-                                                          child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
-                                                              fixedSize: Size(
-                                                                204,
-                                                                37,
-                                                              ),
-                                                              textStyle:
-                                                                  TextStyle(
-                                                                    fontSize:
-                                                                        20 *
-                                                                        textScale,
+                                                            child: SizedBox(
+                                                              height: 54,
+                                                              child: ElevatedButton(
+                                                                style: ElevatedButton.styleFrom(
+                                                                  fixedSize: Size(
+                                                                    204,
+                                                                    37,
                                                                   ),
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                        fontSize:
+                                                                            20 *
+                                                                            textScale,
+                                                                      ),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
                                                                       52,
                                                                     ),
-                                                              ),
-                                                              backgroundColor:
-                                                                  Color.fromRGBO(
-                                                                    187,
-                                                                    214,
-                                                                    197,
-                                                                    1,
                                                                   ),
-                                                            ),
-                                                            onPressed: () async {
-                                                              setState(() {
-                                                                time();
-                                                                timeInEnglish();
-                                                                tag = 0;
-                                                                after =
-                                                                    double.parse(
-                                                                      _reading
-                                                                          .text,
-                                                                    );
-                                                                if (after <=
-                                                                    0) {
-                                                                  showDialog<
-                                                                    String
-                                                                  >(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (
-                                                                          BuildContext
-                                                                          context,
-                                                                        ) => AlertDialog(
-                                                                          title: const Text(
-                                                                            'ERROR',
-                                                                          ),
-                                                                          content: const Text(
-                                                                            'الرقم الذي ادخلته خاطئ  , الرجاء اعادة ادخال الرقم ',
-                                                                          ),
-                                                                          actions: <
-                                                                            Widget
-                                                                          >[
-                                                                            TextButton(
-                                                                              onPressed:
-                                                                                  () => Navigator.pop(
-                                                                                    context,
+                                                                  backgroundColor:
+                                                                      Color.fromRGBO(
+                                                                        187,
+                                                                        214,
+                                                                        197,
+                                                                        1,
+                                                                      ),
+                                                                ),
+                                                                onPressed: () async {
+                                                                  setState(() {
+                                                                    time();
+                                                                    timeInEnglish();
+                                                                    tag = 0;
+                                                                    after =
+                                                                        double.parse(
+                                                                          _reading
+                                                                              .text,
+                                                                        );
+                                                                    if (after <=
+                                                                        0) {
+                                                                      showDialog<
+                                                                        String
+                                                                      >(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (
+                                                                              BuildContext
+                                                                              context,
+                                                                            ) => AlertDialog(
+                                                                              title: const Text(
+                                                                                'ERROR',
+                                                                              ),
+                                                                              content: const Text(
+                                                                                'الرقم الذي ادخلته خاطئ  , الرجاء اعادة ادخال الرقم ',
+                                                                              ),
+                                                                              actions: <
+                                                                                Widget
+                                                                              >[
+                                                                                TextButton(
+                                                                                  onPressed:
+                                                                                      () => Navigator.pop(
+                                                                                        context,
+                                                                                        'OK',
+                                                                                      ),
+                                                                                  child: const Text(
                                                                                     'OK',
                                                                                   ),
-                                                                              child: const Text(
-                                                                                'OK',
-                                                                              ),
+                                                                                ),
+                                                                              ],
                                                                             ),
-                                                                          ],
-                                                                        ),
-                                                                  );
-                                                                } else {
-                                                                  _saveReading(
-                                                                    after,
-                                                                    'postprandial',
-                                                                  );
-                                                                  _reading
-                                                                      .clear();
-                                                                  Navigator.pop(
-                                                                    context,
-                                                                  );
-                                                                }
-                                                              });
-                                                            },
-                                                            child: const Text(
-                                                              'ادخال القراءة ',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                                      );
+                                                                    } else {
+                                                                      _saveReading(
+                                                                        after,
+                                                                        'postprandial',
+                                                                      );
+                                                                      _reading
+                                                                          .clear();
+                                                                      Navigator.pop(
+                                                                        context,
+                                                                      );
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child: const Text(
+                                                                  'ادخال القراءة ',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                  );
-                                });
-                              },
+                                            ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                /// Title of readings
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0, top: 25),
-                        child: Text(
-                          'القراءات',
-                          style: TextStyle(fontSize: 40 * textScale),
-                        ),
+                          ),
+                        ],
                       ),
                     ),
+
+                    /// Title of readings
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0, top: 25),
+                            child: Text(
+                              'القراءات',
+                              style: TextStyle(fontSize: 40 * textScale),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// Row of "before readings"
+                    SingleChildScrollView(
+                      physics: PageScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(children: callingListBefore(beforeReadings)),
+                    ),
+
+                    /// Row of "after readings"
+                    SingleChildScrollView(
+                      physics: PageScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(children: callingListAfter(afterReadings)),
+                    ),
+                    
+                    // Add bottom padding to prevent floating action button overlap
+                    SizedBox(height: 80),
                   ],
                 ),
-
-                /// Row of "before readings"
-                SingleChildScrollView(
-                  physics: PageScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: callingListBefore(beforeReadings)),
-                ),
-
-                /// Row of "after readings"
-                SingleChildScrollView(
-                  physics: PageScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: callingListAfter(afterReadings)),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Center(
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.picture_as_pdf),
-                      label: Text('رفع وتحميل تقارير التحاليل الطبية'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PdfUploadScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -878,7 +865,7 @@ class _PatientInformationState extends State<PatientInformation> {
                       Text(
                         'صائم',
                         style: TextStyle(
-                          fontSize: 20 * textScale,
+                          fontSize: 18 * textScale,
                           color: Colors.white,
                         ),
                       ),
@@ -898,7 +885,7 @@ class _PatientInformationState extends State<PatientInformation> {
                             ? _formatDate(reading['date'])
                             : 'No date',
                         style: TextStyle(
-                          fontSize: 12 * textScale,
+                          fontSize: 8 * textScale,
                           color: Colors.white,
                         ),
                       ),
@@ -956,7 +943,7 @@ class _PatientInformationState extends State<PatientInformation> {
                     Text(
                       'غير صائم',
                       style: TextStyle(
-                        fontSize: 20 * textScale,
+                        fontSize: 18 * textScale,
                         color: Colors.white,
                       ),
                     ),
@@ -976,7 +963,7 @@ class _PatientInformationState extends State<PatientInformation> {
                           ? _formatDate(reading['date'])
                           : 'No date',
                       style: TextStyle(
-                        fontSize: 12 * textScale,
+                        fontSize: 8 * textScale,
                         color: Colors.white,
                       ),
                     ),

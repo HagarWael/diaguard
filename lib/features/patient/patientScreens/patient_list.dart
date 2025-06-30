@@ -14,9 +14,13 @@ import 'package:diaguard1/features/patient/patientScreens/infopage_patient.dart'
 import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
 
 import 'package:diaguard1/features/patient/chartPatient/chart_patient.dart';
-import 'package:diaguard1/features/patient/menu/twasel.dart';
+
 import 'package:diaguard1/features/welcome/screens/usertype.dart';
-import 'package:diaguard1/features/patient/menu/edit_patientpage.dart';
+import 'package:diaguard1/features/patient/patientScreens/calorie_calc.dart';
+import 'package:diaguard1/features/patient/patientScreens/insuline_calc.dart';
+import 'package:diaguard1/features/patient/patientScreens/chatbot.dart';
+import 'package:diaguard1/features/patient/patientScreens/pdf_upload_screen.dart';
+import 'package:diaguard1/features/patient/patientScreens/contact_us.dart';
 
 
 class BarHome extends StatefulWidget {
@@ -192,10 +196,24 @@ class _BarHomeState extends State<BarHome> {
             ],
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => twasel()),
-            );
+            print('Contact Us tapped - attempting navigation');
+            try {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ContactUsScreen(),
+                ),
+              );
+              print('Navigation successful');
+            } catch (e) {
+              print('Navigation error: $e');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Navigation error: $e'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           },
         ),
 
@@ -208,7 +226,52 @@ class _BarHomeState extends State<BarHome> {
                 : 'Nutritional Chatbot',
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onTap: () => Navigator.pushNamed(context, '/chatbot_patient'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChatbotPatientPage(),
+              ),
+            );
+          },
+        ),
+
+        // Calorie Calculator
+        ListTile(
+          leading: const Icon(Icons.local_fire_department, color: Colors.white),
+          title: Text(
+            context.locale.languageCode == 'ar'
+                ? 'حاسبة السعرات'
+                : 'Calorie Calculator',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CalorieCalculatorScreen(),
+              ),
+            );
+          },
+        ),
+
+        // Insulin Calculator
+        ListTile(
+          leading: const Icon(Icons.calculate, color: Colors.white),
+          title: Text(
+            context.locale.languageCode == 'ar'
+                ? 'حاسبة الإنسولين'
+                : 'Insulin Calculator',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => InsulinCalculatorScreen(),
+              ),
+            );
+          },
         ),
 
         const Divider(
@@ -217,22 +280,63 @@ class _BarHomeState extends State<BarHome> {
         // 6) Logout
         ListTile(
           title: Row(
-            children: const [
+            children:  [
               SizedBox(width: 10),
-              Text('تسجيل الخروج',
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
+             Text(
+                context.locale.languageCode == 'ar'
+                      
+                    ? 'تسجيل خروج'
+                    : 'Logout',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ],
           ),
           onTap: () async {
             await widget.authService.logout();
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const AppUser()),
+              MaterialPageRoute(builder: (_) => AppUser()),
               (_) => false,
             );
           },
         ),
-      ],
-    );
+           ListTile(
+      leading: Icon(Icons.picture_as_pdf, color: Colors.white),
+      title: Text(
+        context.locale.languageCode == 'ar'
+            ? 'رفع تقارير التحاليل'
+            : 'Upload Medical Reports',
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PdfUploadScreen(),
+          ),
+        );
+      },
+    ),
+    
+    // ... rest of the drawer items ...
+  ],
+);
+   
+    /*// Main patient list with PDF upload as a list item
+    final mainListItems = [
+      // ... other list items if needed ...
+      ListTile(
+        leading: Icon(Icons.picture_as_pdf, color: Colors.deepPurple),
+        title: Text('رفع و تحميل تقارير التحاليل الطبية'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PdfUploadScreen(),
+            ),
+          );
+        },
+      ),
+    ];*/
 
     return Scaffold(
       key: _scaffoldKey,
@@ -267,11 +371,34 @@ class _BarHomeState extends State<BarHome> {
         ),
       ),
 
-      body: PageView(
-        controller: _pageController,
-        children: _screens,
-        onPageChanged: _onPageChanged,
-        physics: const NeverScrollableScrollPhysics(),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: _screens,
+              onPageChanged: _onPageChanged,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
+          ),
+        /*  Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.picture_as_pdf),
+                label: Text('رفع وتحميل تقارير التحاليل الطبية'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PdfUploadScreen(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),*/
+        ],
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
