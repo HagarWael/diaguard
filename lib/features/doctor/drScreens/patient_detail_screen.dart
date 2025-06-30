@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'dart:convert';
 import 'package:diaguard1/features/doctor/drScreens/chat_screen.dart';
 import 'package:diaguard1/features/doctor/drScreens/patient_pdfs_screen.dart';
+import 'package:http/http.dart' as http;
 
 class PatientDetailScreen extends StatefulWidget {
   final String patientId;
@@ -24,6 +25,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   late DoctorService _doctorService;
   Map<String, dynamic>? _patientDetails;
   List<Map<String, dynamic>> _glucoseReadings = [];
+  List<Map<String, String>> _questionAnswers = [];
   bool _isLoading = true;
   String? _error;
 
@@ -45,11 +47,13 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
       final results = await Future.wait([
         _doctorService.getPatientDetails(widget.patientId),
         _doctorService.getPatientGlucoseReadings(widget.patientId),
+        _fetchQuestionAnswers(widget.patientId),
       ]);
 
       setState(() {
         _patientDetails = results[0] as Map<String, dynamic>;
         _glucoseReadings = results[1] as List<Map<String, dynamic>>;
+        _questionAnswers = results[2] as List<Map<String, String>>;
         _isLoading = false;
       });
     } catch (e) {
@@ -58,6 +62,42 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<List<Map<String, String>>> _fetchQuestionAnswers(String patientId) async {
+    // Get the token from the doctor's AuthService
+    final token = await _doctorService.authService.getToken();
+    final response = await http.get(
+      Uri.parse('http://localhost:3000/questions/get-answers?userId=$patientId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print('Fetching answers for patientId: $patientId');
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final questionList = data['question'] ?? data['patient']?['question'];
+      if (questionList != null) {
+        print('Parsed question answers: $questionList');
+        return (questionList as List)
+            .map<Map<String, String>>((q) => {
+                  'questionText': q['questionText'].toString(),
+                  'answer': q['answer'].toString(),
+                })
+            .toList();
+      }
+    }
+    return [];
+  }
+
+  String? _getAnswerByIndex(int index) {
+    if (_questionAnswers.length > index) {
+      return _questionAnswers[index]['answer'];
+    }
+    return null;
   }
 
   List<FlSpot> _prepareChartData() {
@@ -152,9 +192,9 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
                               const SizedBox(height: 16),
                               _buildInfoRow('Name', _patientDetails?['fullname'] ?? widget.patientName),
                               _buildInfoRow('Email', _patientDetails?['email'] ?? 'N/A'),
-                              _buildInfoRow('Age', _patientDetails?['age']?.toString() ?? 'N/A'),
-                              _buildInfoRow('Gender', _patientDetails?['gender'] ?? 'N/A'),
-                              _buildInfoRow('Diabetes Type', _patientDetails?['diabetesType'] ?? 'N/A'),
+                              _buildInfoRow('Age', _getAnswerByIndex(0) ?? 'N/A'),
+                              _buildInfoRow('Diabetes Type', _getAnswerByIndex(1) ?? 'N/A'),
+                              _buildInfoRow('Weight Category', _getAnswerByIndex(10) ?? 'N/A'),
                             ],
                           ),
                         ),

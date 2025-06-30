@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadAnswers() async {
     setState(() => isLoading = true);
     try {
-      // If we have answers passed from questions screen, use them
       if (widget.answers != null && widget.answers!.isNotEmpty) {
+        print('Using passed answers: \\${widget.answers}');
         answers = widget.answers!.entries.map((entry) {
           return {
             'questionText': questions[entry.key],
@@ -43,11 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           };
         }).toList();
       } else {
-        // Otherwise try to load from service
+        print('Fetching answers from backend...');
         final loadedAnswers = await questionService.getAnswers();
+        print('Loaded answers: \\${loadedAnswers}');
         setState(() => answers = loadedAnswers);
       }
     } catch (e) {
+      print('Error loading answers: \\${e}');
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Failed to load answers: $e')));

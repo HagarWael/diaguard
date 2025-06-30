@@ -117,7 +117,6 @@ class _BarHomeState extends State<BarHome> {
                 builder: (_) => ProfileScreen(
                   userName: widget.userName,
                   authService: widget.authService,
-                  answers: widget.answers,
                 ),
               ),
             );
